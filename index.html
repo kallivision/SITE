@@ -30,9 +30,9 @@
       color: #fff;
     }
 
-    /* ════════════════════════════════════
-       NAVBAR
-    ════════════════════════════════════ */
+    /* ══════════════════════════════════
+       NAVBAR DESKTOP
+    ══════════════════════════════════ */
     .navbar {
       position: fixed;
       top: 28px;
@@ -84,9 +84,7 @@
       opacity: 0;
       max-width: 0;
       overflow: hidden;
-      transition:
-        opacity 0.4s ease 0.2s,
-        max-width 0.6s cubic-bezier(0.4,0,0.2,1);
+      transition: opacity 0.4s ease 0.2s, max-width 0.6s cubic-bezier(0.4,0,0.2,1);
     }
     .navbar.scrolled .nav-links { opacity: 1; max-width: 600px; }
 
@@ -95,7 +93,6 @@
       font-size: 13.5px;
       font-weight: 500;
       letter-spacing: -0.01em;
-      line-height: 1;
       color: rgba(255,255,255,0.78);
       text-decoration: none;
       padding: 9px 18px;
@@ -122,37 +119,213 @@
       opacity: 0;
       max-width: 0;
       overflow: hidden;
-      transition:
-        opacity 0.4s ease 0.3s,
-        max-width 0.6s cubic-bezier(0.4,0,0.2,1);
+      transition: opacity 0.4s ease 0.3s, max-width 0.6s cubic-bezier(0.4,0,0.2,1);
       flex-shrink: 0;
     }
     .navbar.scrolled .nav-btn { opacity: 1; max-width: 160px; }
 
+    /* botão contato — sem borda quadrada */
     .nav-btn a {
       display: inline-block;
       padding: 9px 22px;
       background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
       border-radius: 30px;
+      border: none;
+      outline: none;
       color: #fff;
       font-family: var(--font);
       font-size: 13px;
       font-weight: 600;
       letter-spacing: -0.01em;
-      line-height: 1;
       text-decoration: none;
       white-space: nowrap;
       box-shadow: 0 0 18px rgba(59,130,246,0.35);
       transition: box-shadow 0.25s, transform 0.2s;
+      -webkit-appearance: none;
     }
     .nav-btn a:hover {
       box-shadow: 0 0 30px rgba(59,130,246,0.65);
       transform: translateY(-1px);
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
+       NAVBAR MOBILE
+    ══════════════════════════════════ */
+    .navbar-mobile {
+      display: none;
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: calc(100vw - 32px);
+      flex-direction: column;
+    }
+
+    /* barra principal */
+    .mob-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 16px;
+      border-radius: 50px;
+      background: rgba(10,20,50,0.6);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255,255,255,0.13);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      gap: 6px;
+    }
+
+    .mob-bar .mob-logo img {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .mob-bar .mob-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .mob-bar .mob-links a {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      padding: 7px 12px;
+      border-radius: 30px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .mob-bar .mob-links a:hover,
+    .mob-bar .mob-links a:active { color: #fff; background: rgba(255,255,255,0.08); }
+
+    .mob-bar .mob-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* botão contato mobile */
+    .mob-contact-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 16px;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      box-shadow: 0 0 14px rgba(59,130,246,0.4);
+      -webkit-appearance: none;
+      white-space: nowrap;
+    }
+
+    /* botão "+" */
+    .mob-more-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.25s, transform 0.3s;
+    }
+    .mob-more-btn.open { transform: rotate(45deg); background: rgba(59,130,246,0.25); }
+    .mob-more-btn svg {
+      width: 16px; height: 16px;
+      stroke: #fff; stroke-width: 2.5; fill: none;
+    }
+
+    /* drawer dropdown */
+    .mob-drawer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+      opacity: 0;
+      margin-top: 8px;
+    }
+    .mob-drawer.open {
+      max-height: 500px;
+      opacity: 1;
+    }
+
+    .mob-drawer-inner {
+      background: rgba(10,20,50,0.72);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 22px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mob-drawer-logo {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 8px;
+    }
+    .mob-drawer-logo img { height: 34px; width: auto; object-fit: contain; }
+
+    .mob-drawer-inner a.mob-nav-item {
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      padding: 13px 16px;
+      border-radius: 14px;
+      transition: background 0.2s, color 0.2s;
+      display: block;
+    }
+    .mob-drawer-inner a.mob-nav-item:hover,
+    .mob-drawer-inner a.mob-nav-item:active {
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+    }
+
+    .mob-drawer-cta {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(59,130,246,0.4);
+      transition: box-shadow 0.25s, transform 0.2s;
+      -webkit-appearance: none;
+    }
+    .mob-drawer-cta:active { transform: scale(0.97); }
+
+    /* ══════════════════════════════════
        HERO
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     .hero {
       position: relative;
       width: 100%;
@@ -162,6 +335,7 @@
       overflow: hidden;
     }
 
+    /* vídeo desktop */
     .hero-video-desktop {
       position: absolute;
       inset: 0;
@@ -169,9 +343,8 @@
     }
     .hero-video-desktop iframe {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
       width: calc(100% + 120px);
       height: calc(100% + 80px);
       min-width: 100%;
@@ -180,21 +353,28 @@
       pointer-events: none;
     }
 
+    /* vídeo mobile */
     .hero-video-mobile {
       display: none;
       position: relative;
       width: 100%;
-      padding-top: 177.78%;
+      z-index: 0;
       overflow: hidden;
-      z-index: 1;
     }
-    .hero-video-mobile iframe {
+    .hero-video-mobile-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%;
+    }
+    .hero-video-mobile-wrap iframe {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       border: none;
+      pointer-events: none;
     }
 
+    /* overlay azul */
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -209,6 +389,7 @@
       pointer-events: none;
     }
 
+    /* conteúdo hero */
     .hero-content {
       position: relative;
       z-index: 2;
@@ -248,24 +429,26 @@
       padding: 18px 42px;
       background: linear-gradient(135deg, var(--blue-1) 0%, var(--blue-2) 100%);
       border-radius: 12px;
+      border: none;
+      outline: none;
       color: #fff;
       font-family: var(--font);
       font-size: 16px;
       font-weight: 600;
       letter-spacing: -0.02em;
-      line-height: 1;
       text-decoration: none;
       box-shadow: 0 6px 30px rgba(29,78,216,0.5);
       transition: transform 0.25s, box-shadow 0.25s;
+      -webkit-appearance: none;
     }
     .cta-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 14px 44px rgba(29,78,216,0.7);
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
        COMPARAÇÃO
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     .comparison-section {
       position: relative;
       width: 100%;
@@ -282,25 +465,11 @@
     .comparison-section::before {
       content: '';
       position: absolute;
-      width: 700px;
-      height: 700px;
+      width: 700px; height: 700px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(25,65,160,0.35) 0%, transparent 70%);
-      top: 50%;
-      right: -8%;
+      top: 50%; right: -8%;
       transform: translateY(-50%);
-      pointer-events: none;
-    }
-
-    .comparison-section::after {
-      content: '';
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(15,40,110,0.25) 0%, transparent 70%);
-      top: 10%;
-      left: 5%;
       pointer-events: none;
     }
 
@@ -323,11 +492,7 @@
       background-clip: text;
       display: block;
     }
-
-    .comparison-title .t-white {
-      color: #ffffff;
-      display: block;
-    }
+    .comparison-title .t-white { color: #fff; display: block; }
 
     .comparison-grid {
       display: grid;
@@ -339,7 +504,6 @@
       z-index: 2;
     }
 
-    /* Cards comparação */
     .comp-card {
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,0.1);
@@ -352,7 +516,7 @@
       align-items: flex-start;
       transition:
         transform 0.38s cubic-bezier(0.4,0,0.2,1),
-        box-shadow 0.38s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.38s,
         border-color 0.38s;
       position: relative;
       overflow: hidden;
@@ -361,10 +525,8 @@
     .comp-card::after {
       content: '';
       position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 180px;
-      height: 180px;
+      top: -80px; right: -80px;
+      width: 180px; height: 180px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
       opacity: 0;
@@ -372,7 +534,7 @@
       pointer-events: none;
     }
 
-    .comp-card:hover {
+    .comp-card:hover, .comp-card.animate {
       transform: translateY(-8px);
       box-shadow:
         0 22px 52px rgba(0,0,0,0.45),
@@ -381,12 +543,10 @@
       border-color: rgba(59,130,246,0.45);
     }
 
-    .comp-card:hover::after { opacity: 1; }
+    .comp-card:hover::after, .comp-card.animate::after { opacity: 1; }
 
-    /* Ícone circular X */
     .card-icon-circle {
-      width: 60px;
-      height: 60px;
+      width: 60px; height: 60px;
       border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.25);
       background: rgba(255,255,255,0.04);
@@ -398,42 +558,36 @@
       transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
     }
 
-    .comp-card:hover .card-icon-circle {
+    .comp-card:hover .card-icon-circle,
+    .comp-card.animate .card-icon-circle {
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(255,255,255,0.12);
       border-color: rgba(255,255,255,0.4);
     }
 
     .card-icon-circle svg {
-      width: 26px;
-      height: 26px;
+      width: 26px; height: 26px;
       stroke: rgba(255,255,255,0.5);
       stroke-width: 2;
       fill: none;
     }
 
-    /* Logo pill — lado positivo */
     .card-logo-pill {
       align-self: center;
       margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       transition: transform 0.35s, filter 0.35s;
     }
 
     .card-logo-pill img {
-      height: 52px;
-      width: auto;
-      object-fit: contain;
+      height: 52px; width: auto; object-fit: contain;
     }
 
-    .comp-card:hover .card-logo-pill {
+    .comp-card:hover .card-logo-pill,
+    .comp-card.animate .card-logo-pill {
       transform: scale(1.04);
       filter: drop-shadow(0 0 12px rgba(59,130,246,0.35));
     }
 
-    /* Título do card */
     .card-heading {
       font-family: var(--font);
       font-size: clamp(17px, 1.8vw, 24px);
@@ -445,7 +599,6 @@
       margin-bottom: 32px;
     }
 
-    /* Lista de itens */
     .card-list {
       display: flex;
       flex-direction: column;
@@ -462,36 +615,18 @@
     .icon-x {
       flex-shrink: 0;
       margin-top: 2px;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
     }
-    .icon-x svg {
-      width: 18px;
-      height: 18px;
-      stroke: #e05252;
-      stroke-width: 2.5;
-      fill: none;
-    }
+    .icon-x svg { width: 18px; height: 18px; stroke: #e05252; stroke-width: 2.5; fill: none; }
 
     .icon-check {
       flex-shrink: 0;
       margin-top: 2px;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
     }
-    .icon-check svg {
-      width: 18px;
-      height: 18px;
-      stroke: #3ecf6e;
-      stroke-width: 2.8;
-      fill: none;
-    }
+    .icon-check svg { width: 18px; height: 18px; stroke: #3ecf6e; stroke-width: 2.8; fill: none; }
 
     .card-item-text {
       font-family: var(--font);
@@ -502,9 +637,9 @@
       color: rgba(255,255,255,0.68);
     }
 
-    /* ════════════════════════════════════
-       SERVIÇOS — design da foto
-    ════════════════════════════════════ */
+    /* ══════════════════════════════════
+       SERVIÇOS
+    ══════════════════════════════════ */
     .section-services {
       background: #f0f2f5;
       padding: 100px 5%;
@@ -527,7 +662,6 @@
       background-clip: text;
     }
 
-    /* Grid de 4 colunas */
     .services-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -536,10 +670,6 @@
       margin: 0 auto;
     }
 
-    @media (max-width: 1024px) { .services-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 580px)  { .services-grid { grid-template-columns: 1fr; } }
-
-    /* Card serviço — dark navy */
     .svc-card {
       background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 60%, #0d1e3a 100%);
       border-radius: 22px;
@@ -569,7 +699,7 @@
       transition: opacity 0.38s, transform 0.38s;
     }
 
-    .svc-card:hover {
+    .svc-card:hover, .svc-card.animate {
       transform: translateY(-10px);
       box-shadow:
         0 24px 56px rgba(0,0,0,0.45),
@@ -578,28 +708,26 @@
       border-color: rgba(59,130,246,0.5);
     }
 
-    .svc-card:hover::before {
+    .svc-card:hover::before, .svc-card.animate::before {
       opacity: 1;
       transform: scale(1.15);
     }
 
-    /* Ícone SVG outline */
     .svc-icon {
-      width: 54px;
-      height: 54px;
+      width: 54px; height: 54px;
       margin-bottom: 26px;
       align-self: center;
       transition: transform 0.35s, filter 0.35s;
     }
 
-    .svc-card:hover .svc-icon {
+    .svc-card:hover .svc-icon,
+    .svc-card.animate .svc-icon {
       transform: scale(1.1) translateY(-2px);
       filter: drop-shadow(0 0 10px rgba(59,130,246,0.5));
     }
 
     .svc-icon svg {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       stroke: rgba(180,210,255,0.8);
       stroke-width: 1.3;
       fill: none;
@@ -607,7 +735,6 @@
       stroke-linejoin: round;
     }
 
-    /* Título do card — gradiente azul */
     .svc-card h3 {
       font-family: var(--font);
       font-size: clamp(17px, 1.6vw, 21px);
@@ -624,9 +751,7 @@
       transition: filter 0.3s;
     }
 
-    .svc-card:hover h3 {
-      filter: brightness(1.15);
-    }
+    .svc-card:hover h3, .svc-card.animate h3 { filter: brightness(1.15); }
 
     .svc-card p {
       font-family: var(--font);
@@ -637,12 +762,9 @@
       flex: 1;
     }
 
-    .svc-card p strong {
-      color: rgba(255,255,255,0.85);
-      font-weight: 600;
-    }
+    .svc-card p strong { color: rgba(255,255,255,0.85); font-weight: 600; }
 
-    /* Botão SAIBA MAIS */
+    /* botão SAIBA MAIS — sem borda quadrada fantasma */
     .svc-btn {
       display: flex;
       align-items: center;
@@ -661,12 +783,9 @@
       text-transform: uppercase;
       text-decoration: none;
       cursor: pointer;
-      transition:
-        background 0.3s,
-        border-color 0.3s,
-        color 0.3s,
-        box-shadow 0.3s,
-        transform 0.25s;
+      outline: none;
+      -webkit-appearance: none;
+      transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.25s;
     }
 
     .svc-btn:hover {
@@ -678,13 +797,10 @@
     }
 
     .svc-btn-arrow {
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       border-radius: 50%;
       border: 1px solid rgba(59,130,246,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       transition: background 0.3s, border-color 0.3s;
     }
@@ -695,16 +811,15 @@
     }
 
     .svc-btn-arrow svg {
-      width: 13px;
-      height: 13px;
+      width: 13px; height: 13px;
       stroke: #60a5fa;
       stroke-width: 2.5;
       fill: none;
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
        RESULTADOS
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     .section-results {
       background: #030b1a;
       padding: 100px 7%;
@@ -745,21 +860,16 @@
       margin-top: 60px;
     }
 
-    @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr 1fr; } }
-
     .result-item {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 18px;
       padding: 32px 24px;
       text-align: center;
-      transition:
-        transform 0.32s cubic-bezier(0.4,0,0.2,1),
-        box-shadow 0.32s,
-        border-color 0.32s;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), box-shadow 0.32s, border-color 0.32s;
     }
 
-    .result-item:hover {
+    .result-item:hover, .result-item.animate {
       transform: translateY(-7px);
       box-shadow: 0 18px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.42);
       border-color: rgba(59,130,246,0.48);
@@ -786,9 +896,9 @@
       line-height: 1.4;
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
        PROCESSO
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     .section-process {
       background: linear-gradient(160deg, #040e22 0%, #071530 100%);
       padding: 100px 7%;
@@ -815,17 +925,10 @@
     .process-steps::before {
       content: '';
       position: absolute;
-      top: 35px;
-      left: 10%;
-      right: 10%;
+      top: 35px; left: 10%; right: 10%;
       height: 1px;
       background: linear-gradient(to right, transparent, rgba(59,130,246,0.35), transparent);
       z-index: 0;
-    }
-
-    @media (max-width: 768px) {
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
     }
 
     .step {
@@ -836,14 +939,10 @@
       border-radius: 18px;
       border: 1px solid var(--glass-border);
       background: var(--glass-bg);
-      transition:
-        transform 0.32s cubic-bezier(0.4,0,0.2,1),
-        box-shadow 0.32s,
-        border-color 0.32s,
-        background 0.32s;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), box-shadow 0.32s, border-color 0.32s, background 0.32s;
     }
 
-    .step:hover {
+    .step:hover, .step.animate {
       transform: translateY(-8px);
       box-shadow: 0 20px 46px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.42);
       border-color: rgba(59,130,246,0.5);
@@ -854,8 +953,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 46px;
-      height: 46px;
+      width: 46px; height: 46px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
       font-family: var(--font);
@@ -867,7 +965,7 @@
       transition: box-shadow 0.3s, transform 0.3s;
     }
 
-    .step:hover .step-number {
+    .step:hover .step-number, .step.animate .step-number {
       box-shadow: 0 0 32px rgba(59,130,246,0.6);
       transform: scale(1.1);
     }
@@ -890,9 +988,9 @@
       letter-spacing: -0.005em;
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
        CONTATO
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     .section-contact {
       background: #030b1a;
       padding: 100px 7%;
@@ -941,6 +1039,8 @@
       padding: 20px 52px;
       background: linear-gradient(135deg, var(--blue-1) 0%, var(--blue-2) 100%);
       border-radius: 14px;
+      border: none;
+      outline: none;
       color: #fff;
       font-family: var(--font);
       font-size: 16px;
@@ -949,6 +1049,7 @@
       text-decoration: none;
       box-shadow: 0 8px 32px rgba(29,78,216,0.5);
       transition: transform 0.25s, box-shadow 0.25s;
+      -webkit-appearance: none;
     }
 
     .btn-cta-large:hover {
@@ -956,9 +1057,9 @@
       box-shadow: 0 16px 48px rgba(29,78,216,0.7);
     }
 
-    /* ════════════════════════════════════
+    /* ══════════════════════════════════
        FOOTER
-    ════════════════════════════════════ */
+    ══════════════════════════════════ */
     footer {
       background: #020810;
       border-top: 1px solid rgba(255,255,255,0.05);
@@ -983,34 +1084,82 @@
       letter-spacing: -0.01em;
     }
 
-    /* ════════════════════════════════════
-       MOBILE
-    ════════════════════════════════════ */
+    /* ══════════════════════════════════
+       RESPONSIVE — MOBILE
+    ══════════════════════════════════ */
     @media (max-width: 768px) {
+
+      /* oculta navbar desktop, mostra mobile */
+      .navbar { display: none; }
+      .navbar-mobile { display: flex; }
+
+      /* hero mobile */
       .hero-video-desktop { display: none; }
       .hero-overlay { display: none; }
+
       .hero {
         flex-direction: column;
         align-items: stretch;
         min-height: auto;
         background: #030b1a;
       }
+
       .hero-video-mobile { display: block; }
-      .hero-content { padding: 40px 6% 80px; max-width: 100%; }
+
+      /* conteúdo herói mobile — alinhado à esquerda, centralizado na tela */
+      .hero-content {
+        padding: 36px 8% 72px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-content h1 {
+        font-size: clamp(26px, 7vw, 38px);
+        text-align: left;
+      }
+
+      .hero-content p {
+        font-size: 14px;
+        max-width: 100%;
+        text-align: left;
+      }
+
+      /* comparação */
       .comparison-grid { grid-template-columns: 1fr; max-width: 480px; }
       .comp-card { padding: 36px 28px; }
+
+      /* serviços */
       .section-services { padding: 70px 5%; }
-      .section-results,
-      .section-process,
+      .services-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .svc-card { min-height: auto; padding: 32px 22px 28px; }
+
+      /* resultados */
+      .section-results { padding: 70px 6%; }
+      .results-grid { grid-template-columns: 1fr 1fr; }
+
+      /* processo */
+      .section-process { padding: 70px 6%; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+
+      /* contato */
       .section-contact { padding: 70px 6%; }
       .contact-card { padding: 40px 24px; }
+
+      /* footer */
       footer { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── NAVBAR ── -->
+  <!-- ══ NAVBAR DESKTOP ══ -->
   <nav class="navbar" id="navbar">
     <div class="nav-links">
       <a href="#inicio">Início</a>
@@ -1018,31 +1167,81 @@
       <a href="#como-funciona">Como funciona</a>
     </div>
     <div class="nav-logo">
-      <img
-        src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
-        alt="Kalli Vision"
-      />
+      <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
     </div>
     <div class="nav-btn">
       <a href="#contato">Contato</a>
     </div>
   </nav>
 
-  <!-- ── HERO ── -->
+  <!-- ══ NAVBAR MOBILE ══ -->
+  <div class="navbar-mobile" id="navbarMobile">
+    <!-- barra principal -->
+    <div class="mob-bar">
+      <div class="mob-logo">
+        <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
+      </div>
+      <div class="mob-links">
+        <a href="#inicio">Início</a>
+        <a href="#servicos">Serviços</a>
+      </div>
+      <div class="mob-right">
+        <a href="#contato" class="mob-contact-btn">Contato</a>
+        <div class="mob-more-btn" id="mobMoreBtn" onclick="toggleMobDrawer()">
+          <svg viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- drawer -->
+    <div class="mob-drawer" id="mobDrawer">
+      <div class="mob-drawer-inner">
+        <div class="mob-drawer-logo">
+          <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
+        </div>
+        <a href="#inicio"         class="mob-nav-item" onclick="toggleMobDrawer()">Início</a>
+        <a href="#servicos"       class="mob-nav-item" onclick="toggleMobDrawer()">Serviços</a>
+        <a href="#comparacao"     class="mob-nav-item" onclick="toggleMobDrawer()">Por que a Kalli?</a>
+        <a href="#como-funciona"  class="mob-nav-item" onclick="toggleMobDrawer()">Como funciona</a>
+        <a href="#contato"        class="mob-nav-item" onclick="toggleMobDrawer()">Resultados</a>
+        <a href="#contato" class="mob-drawer-cta" onclick="toggleMobDrawer()">Falar com especialista</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
   <section class="hero" id="inicio">
+
+    <!-- Vídeo desktop -->
     <div class="hero-video-desktop">
       <iframe
         src="https://seamless-vid-loop.lovable.app/v/90d4101e-2b81-439e-bd40-eca96ceac1bc"
-        allow="autoplay" loading="lazy"
+        allow="autoplay; autoplay *"
+        loading="lazy"
+        allowfullscreen
       ></iframe>
     </div>
+
+    <!-- Vídeo mobile — autoplay com todos os atributos necessários -->
     <div class="hero-video-mobile">
-      <iframe
-        src="https://seamless-vid-loop.lovable.app/v/ce0771c3-1452-4c48-934f-822eadc50714"
-        allow="autoplay" loading="lazy"
-      ></iframe>
+      <div class="hero-video-mobile-wrap">
+        <iframe
+          src="https://seamless-vid-loop.lovable.app/v/ce0771c3-1452-4c48-934f-822eadc50714"
+          allow="autoplay; autoplay *; fullscreen"
+          allowfullscreen
+          loading="lazy"
+          playsinline
+        ></iframe>
+      </div>
     </div>
+
+    <!-- overlay somente desktop -->
     <div class="hero-overlay"></div>
+
+    <!-- texto hero -->
     <div class="hero-content">
       <h1>
         Tráfego pago focado<br>
@@ -1058,7 +1257,7 @@
     </div>
   </section>
 
-  <!-- ── COMPARAÇÃO ── -->
+  <!-- ══ COMPARAÇÃO ══ -->
   <section class="comparison-section" id="comparacao">
     <h2 class="comparison-title">
       <span class="t-blue">Por que a maioria das empresas</span>
@@ -1066,9 +1265,7 @@
     </h2>
 
     <div class="comparison-grid">
-
-      <!-- Card esquerdo -->
-      <div class="comp-card">
+      <div class="comp-card" data-animate>
         <div class="card-icon-circle">
           <svg viewBox="0 0 24 24">
             <line x1="18" y1="6" x2="6" y2="18"/>
@@ -1078,69 +1275,47 @@
         <span class="card-heading">Outras agências</span>
         <ul class="card-list">
           <li class="card-item">
-            <span class="icon-x">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </span>
+            <span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
             <span class="card-item-text">Não entendem as particularidades de cada negócio</span>
           </li>
           <li class="card-item">
-            <span class="icon-x">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </span>
+            <span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
             <span class="card-item-text">Anunciam sem funil de vendas</span>
           </li>
           <li class="card-item">
-            <span class="icon-x">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </span>
+            <span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
             <span class="card-item-text">Não acompanham as campanhas para aprimorá-las</span>
           </li>
           <li class="card-item">
-            <span class="icon-x">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </span>
+            <span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
             <span class="card-item-text">Geram altos gastos mas sem resultados expressivos</span>
           </li>
         </ul>
       </div>
 
-      <!-- Card direito -->
-      <div class="comp-card">
+      <div class="comp-card" data-animate>
         <div class="card-logo-pill">
-          <img
-            src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
-            alt="Kalli Vision"
-          />
+          <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
         </div>
         <ul class="card-list">
           <li class="card-item">
-            <span class="icon-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            <span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
             <span class="card-item-text">Entendimento real do seu negócio</span>
           </li>
           <li class="card-item">
-            <span class="icon-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            <span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
             <span class="card-item-text">Objetivo claro, resultados</span>
           </li>
           <li class="card-item">
-            <span class="icon-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            <span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
             <span class="card-item-text">Público certo com um funil de vendas efetivo</span>
           </li>
           <li class="card-item">
-            <span class="icon-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            <span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
             <span class="card-item-text">Oferta ajustada</span>
           </li>
           <li class="card-item">
-            <span class="icon-check">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            <span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
             <span class="card-item-text">Otimização contínua</span>
           </li>
         </ul>
@@ -1148,16 +1323,14 @@
     </div>
   </section>
 
-  <!-- ── SERVIÇOS — exatamente como a foto ── -->
+  <!-- ══ SERVIÇOS ══ -->
   <section class="section-services" id="servicos">
     <div class="services-header">
       <h2>O que a Kalli Vision<br>faz por você?</h2>
     </div>
 
     <div class="services-grid">
-
-      <!-- Card 1 -->
-      <div class="svc-card">
+      <div class="svc-card" data-animate>
         <div class="svc-icon">
           <svg viewBox="0 0 48 48">
             <rect x="4" y="28" width="8" height="14" rx="1.5"/>
@@ -1171,10 +1344,7 @@
           </svg>
         </div>
         <h3>Gestão de<br>Tráfego Pago</h3>
-        <p>
-          Criação, gestão e otimização de campanhas no Google Ads e Meta
-          Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong>
-        </p>
+        <p>Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong></p>
         <a href="#contato" class="svc-btn">
           <span>SAIBA MAIS</span>
           <span class="svc-btn-arrow">
@@ -1183,8 +1353,7 @@
         </a>
       </div>
 
-      <!-- Card 2 -->
-      <div class="svc-card">
+      <div class="svc-card" data-animate>
         <div class="svc-icon">
           <svg viewBox="0 0 48 48">
             <rect x="6" y="6" width="36" height="36" rx="4"/>
@@ -1196,10 +1365,7 @@
           </svg>
         </div>
         <h3>Estrutura de<br>Funil de Vendas</h3>
-        <p>
-          Organizamos o caminho do cliente desde o primeiro clique até o
-          contato ou fechamento.
-        </p>
+        <p>Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.</p>
         <a href="#contato" class="svc-btn">
           <span>SAIBA MAIS</span>
           <span class="svc-btn-arrow">
@@ -1208,8 +1374,7 @@
         </a>
       </div>
 
-      <!-- Card 3 -->
-      <div class="svc-card">
+      <div class="svc-card" data-animate>
         <div class="svc-icon">
           <svg viewBox="0 0 48 48">
             <circle cx="24" cy="24" r="18"/>
@@ -1221,10 +1386,7 @@
           </svg>
         </div>
         <h3>Análise e<br>Otimização Contínua</h3>
-        <p>
-          Nada roda no automático. Na Kalli, analisamos os dados, ajustamos
-          campanhas e melhoramos constantemente.
-        </p>
+        <p>Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.</p>
         <a href="#contato" class="svc-btn">
           <span>SAIBA MAIS</span>
           <span class="svc-btn-arrow">
@@ -1233,8 +1395,7 @@
         </a>
       </div>
 
-      <!-- Card 4 -->
-      <div class="svc-card">
+      <div class="svc-card" data-animate>
         <div class="svc-icon">
           <svg viewBox="0 0 48 48">
             <path d="M24 4 L44 14 L44 34 L24 44 L4 34 L4 14 Z"/>
@@ -1243,10 +1404,7 @@
           </svg>
         </div>
         <h3>Estratégia<br>Personalizada</h3>
-        <p>
-          Cada negócio é único. Nada de campanhas genéricas ou
-          fórmulas prontas.
-        </p>
+        <p>Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.</p>
         <a href="#contato" class="svc-btn">
           <span>SAIBA MAIS</span>
           <span class="svc-btn-arrow">
@@ -1254,106 +1412,35 @@
           </span>
         </a>
       </div>
-
     </div>
   </section>
 
-  <!-- ── RESULTADOS ── -->
+  <!-- ══ RESULTADOS ══ -->
   <section class="section-results">
     <p class="section-tag">Resultados comprovados</p>
     <h2 class="section-title">Números que <span>falam por si</span></h2>
-
     <div class="results-grid">
-      <div class="result-item">
+      <div class="result-item" data-animate>
         <div class="result-number">+350%</div>
         <div class="result-label">Aumento médio de leads qualificados</div>
       </div>
-      <div class="result-item">
+      <div class="result-item" data-animate>
         <div class="result-number">-42%</div>
         <div class="result-label">Redução no custo por aquisição</div>
       </div>
-      <div class="result-item">
+      <div class="result-item" data-animate>
         <div class="result-number">8×</div>
         <div class="result-label">ROAS médio dos clientes ativos</div>
       </div>
-      <div class="result-item">
+      <div class="result-item" data-animate>
         <div class="result-number">+120</div>
         <div class="result-label">Negócios acelerados com tráfego</div>
       </div>
     </div>
   </section>
 
-  <!-- ── COMO FUNCIONA ── -->
+  <!-- ══ COMO FUNCIONA ══ -->
   <section class="section-process" id="como-funciona">
     <p class="section-tag">Processo</p>
-    <h2 class="section-title">Como a Kalli Vision<br><span>trabalha por você</span></h2>
-    <p class="section-subtitle">
-      Um processo estruturado, sem achismos, do diagnóstico ao crescimento contínuo.
-    </p>
+    <h2 class="section-title">Como a Kalli Vision<br><span>trabalha por você</span>
 
-    <div class="process-steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h4>Diagnóstico</h4>
-        <p>Analisamos seu negócio, mercado e o que já foi tentado antes.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h4>Estratégia</h4>
-        <p>Montamos um plano personalizado com metas e canais definidos.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h4>Ativação</h4>
-        <p>Campanhas no ar com segmentação, criativos e rastreamento completo.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">4</div>
-        <h4>Escala</h4>
-        <p>Otimizamos e escalamos o que funciona, cortamos o que não converte.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CONTATO ── -->
-  <section class="section-contact" id="contato">
-    <div class="contact-card">
-      <h2>
-        Pronto para ter<br>
-        <span style="background:linear-gradient(100deg,#60a5fa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
-          vendas previsíveis?
-        </span>
-      </h2>
-      <p>
-        Fale com um especialista da Kalli Vision e descubra quanto tráfego
-        qualificado sua empresa pode estar perdendo agora.
-      </p>
-      <a href="https://wa.me/5500000000000" class="btn-cta-large" target="_blank" rel="noopener">
-        Falar com especialista
-      </a>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer>
-    <img
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
-      alt="Kalli Vision"
-    />
-    <p>© 2026 Kalli Vision. Todos os direitos reservados.</p>
-  </footer>
-
-  <script>
-    const navbar    = document.getElementById('navbar');
-    const THRESHOLD = 60;
-
-    function onScroll() {
-      navbar.classList.toggle('scrolled', window.scrollY >= THRESHOLD);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  </script>
-
-</body>
-</html>
