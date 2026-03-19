@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalli Vision</title>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --blue-1: #3b82f6;
+      --blue-2: #1d4ed8;
+      --blue-3: #60a5fa;
+      --glass-bg: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.13);
+      --glass-blur: blur(22px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: #030b1a;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    /* ════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: 190px;
+      height: 62px;
+      border-radius: 50px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      transition:
+        width 0.65s cubic-bezier(0.4,0,0.2,1),
+        background 0.4s,
+        box-shadow 0.4s,
+        border-color 0.4s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .navbar.scrolled {
+      width: min(860px, 92vw);
+      background: rgba(10,20,50,0.55);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
+      border-color: rgba(59,130,246,0.22);
+    }
+
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      transition: filter 0.3s;
+    }
+    .nav-logo img:hover {
+      filter: drop-shadow(0 0 10px rgba(59,130,246,0.55));
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
+      transition:
+        opacity 0.4s ease 0.2s,
+        max-width 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .navbar.scrolled .nav-links { opacity: 1; max-width: 600px; }
+
+    .nav-links a {
+      font-family: var(--font);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: 30px;
+      transition: color 0.25s, background 0.25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 1.5px;
+      background: var(--blue-1);
+      border-radius: 2px;
+      transition: transform 0.3s ease;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+    .nav-links a:hover::after { transform: translateX(-50%) scaleX(1); }
+
+    .nav-btn {
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
+      transition:
+        opacity 0.4s ease 0.3s,
+        max-width 0.6s cubic-bezier(0.4,0,0.2,1);
+      flex-shrink: 0;
+    }
+    .navbar.scrolled .nav-btn { opacity: 1; max-width: 160px; }
+
+    .nav-btn a {
+      display: inline-block;
+      padding: 9px 22px;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      border-radius: 30px;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 0 18px rgba(59,130,246,0.35);
+      transition: box-shadow 0.25s, transform 0.2s;
+    }
+    .nav-btn a:hover {
+      box-shadow: 0 0 30px rgba(59,130,246,0.65);
+      transform: translateY(-1px);
+    }
+
+    /* ════════════════════════════════════
+       HERO
+    ════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-video-desktop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-video-desktop iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% + 120px);
+      height: calc(100% + 80px);
+      min-width: 100%;
+      min-height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    .hero-video-mobile {
+      display: none;
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .hero-video-mobile iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 65% 90% at 0% 50%, rgba(10,30,90,0.78) 0%, transparent 68%),
+        linear-gradient(to right,
+          rgba(3,11,26,0.92) 0%,
+          rgba(3,11,26,0.58) 35%,
+          rgba(3,11,26,0.18) 60%,
+          transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 160px 7% 100px;
+      max-width: 560px;
+    }
+
+    .hero-content h1 {
+      font-family: var(--font);
+      font-size: clamp(28px, 3.4vw, 52px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -0.045em;
+      margin-bottom: 16px;
+    }
+
+    .hero-content h1 .blue {
+      background: linear-gradient(100deg, var(--blue-3) 0%, var(--blue-1) 50%, #1d7cf7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-content p {
+      font-family: var(--font);
+      font-size: clamp(13px, 1.2vw, 17px);
+      color: rgba(255,255,255,0.5);
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+      margin-bottom: 42px;
+      max-width: 420px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 18px 42px;
+      background: linear-gradient(135deg, var(--blue-1) 0%, var(--blue-2) 100%);
+      border-radius: 12px;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-decoration: none;
+      box-shadow: 0 6px 30px rgba(29,78,216,0.5);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 44px rgba(29,78,216,0.7);
+    }
+
+    /* ════════════════════════════════════
+       COMPARAÇÃO
+    ════════════════════════════════════ */
+    .comparison-section {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 6%;
+      overflow: hidden;
+      background: #030b1a;
+    }
+
+    .comparison-section::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(25,65,160,0.35) 0%, transparent 70%);
+      top: 50%;
+      right: -8%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .comparison-section::after {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(15,40,110,0.25) 0%, transparent 70%);
+      top: 10%;
+      left: 5%;
+      pointer-events: none;
+    }
+
+    .comparison-title {
+      font-family: var(--font);
+      font-size: clamp(24px, 3vw, 46px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.18;
+      text-align: center;
+      margin-bottom: 72px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .comparison-title .t-blue {
+      background: linear-gradient(100deg, #60a5fa 0%, #4b8df0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .comparison-title .t-white {
+      color: #ffffff;
+      display: block;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      width: 100%;
+      max-width: 1000px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Cards comparação */
+    .comp-card {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 48px 48px 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.38s cubic-bezier(0.4,0,0.2,1),
+        border-color 0.38s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .comp-card::after {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.38s;
+      pointer-events: none;
+    }
+
+    .comp-card:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 22px 52px rgba(0,0,0,0.45),
+        0 0 0 1px rgba(59,130,246,0.4),
+        0 0 32px rgba(59,130,246,0.1);
+      border-color: rgba(59,130,246,0.45);
+    }
+
+    .comp-card:hover::after { opacity: 1; }
+
+    /* Ícone circular X */
+    .card-icon-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      margin-bottom: 20px;
+      transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+    }
+
+    .comp-card:hover .card-icon-circle {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .card-icon-circle svg {
+      width: 26px;
+      height: 26px;
+      stroke: rgba(255,255,255,0.5);
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* Logo pill — lado positivo */
+    .card-logo-pill {
+      align-self: center;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s, filter 0.35s;
+    }
+
+    .card-logo-pill img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .comp-card:hover .card-logo-pill {
+      transform: scale(1.04);
+      filter: drop-shadow(0 0 12px rgba(59,130,246,0.35));
+    }
+
+    /* Título do card */
+    .card-heading {
+      font-family: var(--font);
+      font-size: clamp(17px, 1.8vw, 24px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: #5b9cf6;
+      align-self: center;
+      margin-bottom: 32px;
+    }
+
+    /* Lista de itens */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+    }
+
+    .card-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .icon-x {
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-x svg {
+      width: 18px;
+      height: 18px;
+      stroke: #e05252;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .icon-check {
+      flex-shrink: 0;
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-check svg {
+      width: 18px;
+      height: 18px;
+      stroke: #3ecf6e;
+      stroke-width: 2.8;
+      fill: none;
+    }
+
+    .card-item-text {
+      font-family: var(--font);
+      font-size: clamp(13px, 1.05vw, 15.5px);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.68);
+    }
+
+    /* ════════════════════════════════════
+       SERVIÇOS — design da foto
+    ════════════════════════════════════ */
+    .section-services {
+      background: #f0f2f5;
+      padding: 100px 5%;
+    }
+
+    .services-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .services-header h2 {
+      font-family: var(--font);
+      font-size: clamp(28px, 3.2vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      background: linear-gradient(135deg, #4b9cf5 0%, #2563eb 60%, #1e40af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Grid de 4 colunas */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px)  { .services-grid { grid-template-columns: 1fr; } }
+
+    /* Card serviço — dark navy */
+    .svc-card {
+      background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 60%, #0d1e3a 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 42px 32px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 380px;
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.38s,
+        border-color 0.38s;
+      cursor: default;
+    }
+
+    .svc-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.38s, transform 0.38s;
+    }
+
+    .svc-card:hover {
+      transform: translateY(-10px);
+      box-shadow:
+        0 24px 56px rgba(0,0,0,0.45),
+        0 0 0 1px rgba(59,130,246,0.5),
+        0 0 36px rgba(59,130,246,0.14);
+      border-color: rgba(59,130,246,0.5);
+    }
+
+    .svc-card:hover::before {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    /* Ícone SVG outline */
+    .svc-icon {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 26px;
+      align-self: center;
+      transition: transform 0.35s, filter 0.35s;
+    }
+
+    .svc-card:hover .svc-icon {
+      transform: scale(1.1) translateY(-2px);
+      filter: drop-shadow(0 0 10px rgba(59,130,246,0.5));
+    }
+
+    .svc-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: rgba(180,210,255,0.8);
+      stroke-width: 1.3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Título do card — gradiente azul */
+    .svc-card h3 {
+      font-family: var(--font);
+      font-size: clamp(17px, 1.6vw, 21px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      text-align: center;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 18px;
+      align-self: center;
+      transition: filter 0.3s;
+    }
+
+    .svc-card:hover h3 {
+      filter: brightness(1.15);
+    }
+
+    .svc-card p {
+      font-family: var(--font);
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      letter-spacing: -0.005em;
+      flex: 1;
+    }
+
+    .svc-card p strong {
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+    }
+
+    /* Botão SAIBA MAIS */
+    .svc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 32px;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(59,130,246,0.45);
+      background: transparent;
+      color: rgba(255,255,255,0.72);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background 0.3s,
+        border-color 0.3s,
+        color 0.3s,
+        box-shadow 0.3s,
+        transform 0.25s;
+    }
+
+    .svc-btn:hover {
+      background: rgba(59,130,246,0.12);
+      border-color: rgba(59,130,246,0.8);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(59,130,246,0.2);
+      transform: translateX(3px);
+    }
+
+    .svc-btn-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(59,130,246,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .svc-btn:hover .svc-btn-arrow {
+      background: rgba(59,130,246,0.25);
+      border-color: rgba(59,130,246,0.9);
+    }
+
+    .svc-btn-arrow svg {
+      width: 13px;
+      height: 13px;
+      stroke: #60a5fa;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    /* ════════════════════════════════════
+       RESULTADOS
+    ════════════════════════════════════ */
+    .section-results {
+      background: #030b1a;
+      padding: 100px 7%;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .section-tag {
+      font-family: var(--font);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-1);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: var(--font);
+      font-size: clamp(26px, 2.8vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .section-title span {
+      background: linear-gradient(100deg, var(--blue-3), var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 768px) { .results-grid { grid-template-columns: 1fr 1fr; } }
+
+    .result-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-align: center;
+      transition:
+        transform 0.32s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.32s,
+        border-color 0.32s;
+    }
+
+    .result-item:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.42);
+      border-color: rgba(59,130,246,0.48);
+    }
+
+    .result-number {
+      font-family: var(--font);
+      font-size: clamp(30px, 3vw, 46px);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      background: linear-gradient(100deg, var(--blue-3), var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .result-label {
+      font-family: var(--font);
+      font-size: 13px;
+      color: rgba(255,255,255,0.42);
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+
+    /* ════════════════════════════════════
+       PROCESSO
+    ════════════════════════════════════ */
+    .section-process {
+      background: linear-gradient(160deg, #040e22 0%, #071530 100%);
+      padding: 100px 7%;
+    }
+
+    .section-subtitle {
+      font-family: var(--font);
+      font-size: clamp(13px, 1.1vw, 16px);
+      color: rgba(255,255,255,0.42);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      max-width: 480px;
+      margin-top: 10px;
+      margin-bottom: 60px;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 35px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(59,130,246,0.35), transparent);
+      z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 32px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      transition:
+        transform 0.32s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.32s,
+        border-color 0.32s,
+        background 0.32s;
+    }
+
+    .step:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 46px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.42);
+      border-color: rgba(59,130,246,0.5);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 auto 18px;
+      box-shadow: 0 0 20px rgba(59,130,246,0.3);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .step:hover .step-number {
+      box-shadow: 0 0 32px rgba(59,130,246,0.6);
+      transform: scale(1.1);
+    }
+
+    .step h4 {
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-family: var(--font);
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+    }
+
+    /* ════════════════════════════════════
+       CONTATO
+    ════════════════════════════════════ */
+    .section-contact {
+      background: #030b1a;
+      padding: 100px 7%;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .contact-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 60px 48px;
+      transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(59,130,246,0.38);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.4), 0 0 44px rgba(59,130,246,0.09);
+      transform: translateY(-4px);
+    }
+
+    .contact-card h2 {
+      font-family: var(--font);
+      font-size: clamp(22px, 2.5vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .contact-card p {
+      font-family: var(--font);
+      font-size: 15px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      margin-bottom: 36px;
+    }
+
+    .btn-cta-large {
+      display: inline-block;
+      padding: 20px 52px;
+      background: linear-gradient(135deg, var(--blue-1) 0%, var(--blue-2) 100%);
+      border-radius: 14px;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(29,78,216,0.5);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .btn-cta-large:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(29,78,216,0.7);
+    }
+
+    /* ════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════ */
+    footer {
+      background: #020810;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 32px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    footer img {
+      height: 28px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    footer img:hover { opacity: 1; }
+
+    footer p {
+      font-family: var(--font);
+      font-size: 12px;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: -0.01em;
+    }
+
+    /* ════════════════════════════════════
+       MOBILE
+    ════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .hero-video-desktop { display: none; }
+      .hero-overlay { display: none; }
+      .hero {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: auto;
+        background: #030b1a;
+      }
+      .hero-video-mobile { display: block; }
+      .hero-content { padding: 40px 6% 80px; max-width: 100%; }
+      .comparison-grid { grid-template-columns: 1fr; max-width: 480px; }
+      .comp-card { padding: 36px 28px; }
+      .section-services { padding: 70px 5%; }
+      .section-results,
+      .section-process,
+      .section-contact { padding: 70px 6%; }
+      .contact-card { padding: 40px 24px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-links">
+      <a href="#inicio">Início</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#como-funciona">Como funciona</a>
+    </div>
+    <div class="nav-logo">
+      <img
+        src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+        alt="Kalli Vision"
+      />
+    </div>
+    <div class="nav-btn">
+      <a href="#contato">Contato</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="inicio">
+    <div class="hero-video-desktop">
+      <iframe
+        src="https://seamless-vid-loop.lovable.app/v/90d4101e-2b81-439e-bd40-eca96ceac1bc"
+        allow="autoplay" loading="lazy"
+      ></iframe>
+    </div>
+    <div class="hero-video-mobile">
+      <iframe
+        src="https://seamless-vid-loop.lovable.app/v/ce0771c3-1452-4c48-934f-822eadc50714"
+        allow="autoplay" loading="lazy"
+      ></iframe>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>
+        Tráfego pago focado<br>
+        em resultado.<br>
+        <span class="blue">+Leads, +vendas e<br>crescimento previsível</span>
+      </h1>
+      <p>
+        Na Kalli Vision, tráfego não é anúncio solto.<br>
+        Colocamos sua empresa na frente das pessoas<br>
+        certas, no momento certo.
+      </p>
+      <a href="#contato" class="cta-btn">Quero atrair clientes agora</a>
+    </div>
+  </section>
+
+  <!-- ── COMPARAÇÃO ── -->
+  <section class="comparison-section" id="comparacao">
+    <h2 class="comparison-title">
+      <span class="t-blue">Por que a maioria das empresas</span>
+      <span class="t-white">não tem resultado com anúncios?</span>
+    </h2>
+
+    <div class="comparison-grid">
+
+      <!-- Card esquerdo -->
+      <div class="comp-card">
+        <div class="card-icon-circle">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </div>
+        <span class="card-heading">Outras agências</span>
+        <ul class="card-list">
+          <li class="card-item">
+            <span class="icon-x">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <span class="card-item-text">Não entendem as particularidades de cada negócio</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-x">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <span class="card-item-text">Anunciam sem funil de vendas</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-x">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <span class="card-item-text">Não acompanham as campanhas para aprimorá-las</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-x">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </span>
+            <span class="card-item-text">Geram altos gastos mas sem resultados expressivos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card direito -->
+      <div class="comp-card">
+        <div class="card-logo-pill">
+          <img
+            src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+            alt="Kalli Vision"
+          />
+        </div>
+        <ul class="card-list">
+          <li class="card-item">
+            <span class="icon-check">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="card-item-text">Entendimento real do seu negócio</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-check">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="card-item-text">Objetivo claro, resultados</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-check">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="card-item-text">Público certo com um funil de vendas efetivo</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-check">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="card-item-text">Oferta ajustada</span>
+          </li>
+          <li class="card-item">
+            <span class="icon-check">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="card-item-text">Otimização contínua</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVIÇOS — exatamente como a foto ── -->
+  <section class="section-services" id="servicos">
+    <div class="services-header">
+      <h2>O que a Kalli Vision<br>faz por você?</h2>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Card 1 -->
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48">
+            <rect x="4" y="28" width="8" height="14" rx="1.5"/>
+            <rect x="16" y="20" width="8" height="22" rx="1.5"/>
+            <rect x="28" y="12" width="8" height="30" rx="1.5"/>
+            <rect x="40" y="6" width="8" height="36" rx="1.5"/>
+            <polyline points="4,26 16,18 28,10 48,4"/>
+            <circle cx="4" cy="26" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/>
+            <circle cx="16" cy="18" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/>
+            <circle cx="28" cy="10" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Gestão de<br>Tráfego Pago</h3>
+        <p>
+          Criação, gestão e otimização de campanhas no Google Ads e Meta
+          Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong>
+        </p>
+        <a href="#contato" class="svc-btn">
+          <span>SAIBA MAIS</span>
+          <span class="svc-btn-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48">
+            <rect x="6" y="6" width="36" height="36" rx="4"/>
+            <line x1="6" y1="18" x2="42" y2="18"/>
+            <line x1="24" y1="18" x2="24" y2="42"/>
+            <line x1="6" y1="30" x2="24" y2="30"/>
+            <circle cx="15" cy="12" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/>
+            <circle cx="24" cy="12" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Estrutura de<br>Funil de Vendas</h3>
+        <p>
+          Organizamos o caminho do cliente desde o primeiro clique até o
+          contato ou fechamento.
+        </p>
+        <a href="#contato" class="svc-btn">
+          <span>SAIBA MAIS</span>
+          <span class="svc-btn-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="18"/>
+            <polyline points="24,12 24,24 32,30"/>
+            <line x1="6" y1="24" x2="2" y2="24"/>
+            <line x1="46" y1="24" x2="42" y2="24"/>
+            <line x1="24" y1="6" x2="24" y2="2"/>
+            <line x1="24" y1="46" x2="24" y2="42"/>
+          </svg>
+        </div>
+        <h3>Análise e<br>Otimização Contínua</h3>
+        <p>
+          Nada roda no automático. Na Kalli, analisamos os dados, ajustamos
+          campanhas e melhoramos constantemente.
+        </p>
+        <a href="#contato" class="svc-btn">
+          <span>SAIBA MAIS</span>
+          <span class="svc-btn-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48">
+            <path d="M24 4 L44 14 L44 34 L24 44 L4 34 L4 14 Z"/>
+            <path d="M24 14 L34 19 L34 29 L24 34 L14 29 L14 19 Z"/>
+            <circle cx="24" cy="24" r="4" fill="rgba(180,210,255,0.8)" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Estratégia<br>Personalizada</h3>
+        <p>
+          Cada negócio é único. Nada de campanhas genéricas ou
+          fórmulas prontas.
+        </p>
+        <a href="#contato" class="svc-btn">
+          <span>SAIBA MAIS</span>
+          <span class="svc-btn-arrow">
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── RESULTADOS ── -->
+  <section class="section-results">
+    <p class="section-tag">Resultados comprovados</p>
+    <h2 class="section-title">Números que <span>falam por si</span></h2>
+
+    <div class="results-grid">
+      <div class="result-item">
+        <div class="result-number">+350%</div>
+        <div class="result-label">Aumento médio de leads qualificados</div>
+      </div>
+      <div class="result-item">
+        <div class="result-number">-42%</div>
+        <div class="result-label">Redução no custo por aquisição</div>
+      </div>
+      <div class="result-item">
+        <div class="result-number">8×</div>
+        <div class="result-label">ROAS médio dos clientes ativos</div>
+      </div>
+      <div class="result-item">
+        <div class="result-number">+120</div>
+        <div class="result-label">Negócios acelerados com tráfego</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMO FUNCIONA ── -->
+  <section class="section-process" id="como-funciona">
+    <p class="section-tag">Processo</p>
+    <h2 class="section-title">Como a Kalli Vision<br><span>trabalha por você</span></h2>
+    <p class="section-subtitle">
+      Um processo estruturado, sem achismos, do diagnóstico ao crescimento contínuo.
+    </p>
+
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Diagnóstico</h4>
+        <p>Analisamos seu negócio, mercado e o que já foi tentado antes.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>Estratégia</h4>
+        <p>Montamos um plano personalizado com metas e canais definidos.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Ativação</h4>
+        <p>Campanhas no ar com segmentação, criativos e rastreamento completo.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4>Escala</h4>
+        <p>Otimizamos e escalamos o que funciona, cortamos o que não converte.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTATO ── -->
+  <section class="section-contact" id="contato">
+    <div class="contact-card">
+      <h2>
+        Pronto para ter<br>
+        <span style="background:linear-gradient(100deg,#60a5fa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          vendas previsíveis?
+        </span>
+      </h2>
+      <p>
+        Fale com um especialista da Kalli Vision e descubra quanto tráfego
+        qualificado sua empresa pode estar perdendo agora.
+      </p>
+      <a href="https://wa.me/5500000000000" class="btn-cta-large" target="_blank" rel="noopener">
+        Falar com especialista
+      </a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <img
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+      alt="Kalli Vision"
+    />
+    <p>© 2026 Kalli Vision. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    const navbar    = document.getElementById('navbar');
+    const THRESHOLD = 60;
+
+    function onScroll() {
+      navbar.classList.toggle('scrolled', window.scrollY >= THRESHOLD);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+
+</body>
+</html>
