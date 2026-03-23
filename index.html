@@ -306,11 +306,11 @@
         display: none;
       }
 
-      /* Imagem mobile em formato story (9:16) */
+      /* Imagem mobile em formato story (4:5) */
       .hero-bg-mobile {
         display: block;
         width: 100%;
-        aspect-ratio: 9 / 16;
+        aspect-ratio: 4 / 5; /* Alterado para 4:5 */
         object-fit: cover;
         object-position: center top;
         position: relative;
@@ -336,6 +336,93 @@
       .btn-primary {
         width: 100%;
         padding: 18px 24px;
+      }
+
+      /* NAVBAR MOBILE - EXPANSÃO POR CLIQUE */
+      #navbar .nav-pill {
+        width: 170px; /* Largura inicial */
+        padding: 10px 20px;
+        justify-content: center; /* Centraliza a logo */
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        height: auto; /* Altura ajustável */
+        border-radius: 999px; /* Mantém arredondado quando fechado */
+      }
+
+      #navbar.expanded .nav-pill {
+        width: min(860px, 94vw); /* Largura expandida */
+        padding: 10px 28px;
+        justify-content: flex-start; /* Alinha logo à esquerda */
+        flex-direction: column; /* Links para baixo */
+        align-items: flex-start;
+        height: auto;
+        border-radius: 20px; /* Menos arredondado quando expandido */
+      }
+
+      #navbar .nav-links {
+        position: absolute; /* Esconde os links */
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(5, 15, 35, 0.9); /* Fundo para os links */
+        border-radius: 0 0 20px 20px; /* Menos arredondado */
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 28px 20px;
+        gap: 15px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      #navbar.expanded .nav-links {
+        position: static; /* Mostra os links */
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+        margin-top: 15px; /* Espaço entre logo e links */
+        border-radius: 0; /* Remove border-radius extra */
+        background: transparent; /* Remove background extra */
+        padding: 0; /* Remove padding extra */
+      }
+
+      #navbar .nav-btn-wrap {
+        display: none; /* Oculta o botão na versão compacta mobile */
+      }
+
+      #navbar.expanded .nav-btn-wrap {
+        display: block; /* Mostra o botão na versão expandida mobile */
+        opacity: 1;
+        pointer-events: all;
+        transform: translateX(0);
+        margin-top: 15px;
+        width: 100%;
+        text-align: center;
+      }
+
+      #navbar.expanded .nav-btn-wrap .btn-nav {
+        width: 100%;
+      }
+
+      /* Botão de fechar Navbar */
+      .nav-close-btn {
+        display: none; /* Oculto por padrão */
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 24px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 5px;
+        z-index: 10000;
+      }
+      #navbar.expanded .nav-close-btn {
+        display: block; /* Visível quando expandido */
       }
     }
 
@@ -1051,6 +1138,249 @@
     }
 
     /* ================================================================
+       SEÇÃO: COMO FUNCIONA O PROCESSO
+    ================================================================ */
+    #section-process {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .process-grid {
+      max-width: 1040px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+
+    .process-card {
+      border-radius: 24px;
+      padding: 38px 28px;
+      background: rgba(10,22,40,0.50);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        border-color 0.38s,
+        box-shadow 0.38s;
+    }
+
+    .process-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(26,111,255,0.38);
+      box-shadow: 0 24px 60px rgba(26,111,255,0.13);
+    }
+
+    .process-icon-circle {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--blue-light);
+      margin-bottom: 18px;
+      flex-shrink: 0;
+      background: rgba(26,111,255,0.1);
+    }
+
+    .process-card-title {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--blue-light);
+      margin-bottom: 12px;
+    }
+
+    .process-card-text {
+      font-size: 14.5px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.55;
+      letter-spacing: -0.005em;
+    }
+
+    /* ================================================================
+       SEÇÃO: SOBRE A KALLI VISION
+    ================================================================ */
+    #section-about {
+      background: var(--bg);
+      padding: 100px 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-content {
+      max-width: 1040px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .about-text-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .about-title {
+      font-size: clamp(22px, 2.6vw, 36px);
+      font-weight: 300;
+      line-height: 1.20;
+      letter-spacing: -0.018em;
+      color: var(--white);
+    }
+
+    .about-para {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.60;
+      letter-spacing: -0.005em;
+    }
+
+    .about-image-wrap {
+      flex-shrink: 0;
+      width: 300px; /* Tamanho da imagem */
+      height: 300px;
+      overflow: hidden;
+      border-radius: 12px; /* Borda quadrada */
+      border: 3px solid var(--blue);
+      box-shadow: 0 0 0 8px rgba(26,111,255,0.2);
+    }
+
+    .about-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* Imagens específicas para desktop/mobile */
+    .about-image-desktop { display: block; }
+    .about-image-mobile { display: none; }
+
+    /* ================================================================
+       SEÇÃO: VAMOS ANALISAR SEU NEGÓCIO? (FORMULÁRIO)
+    ================================================================ */
+    #section-cta {
+      background: var(--bg);
+      padding: 100px 60px;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .cta-title span {
+      background: linear-gradient(90deg, #1a6fff 0%, #4d9fff 45%, #7ec8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-para {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.65;
+      letter-spacing: -0.005em;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 40px;
+      background: rgba(10,22,40,0.50);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .form-group {
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      color: var(--gray-light);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.2);
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 15px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue-light);
+      background: rgba(0,0,0,0.3);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 30px;
+      border-radius: 12px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: var(--font);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      background: #3d7fff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(26,111,255,0.55);
+    }
+
+    /* ================================================================
        FOOTER
     ================================================================ */
     footer {
@@ -1063,28 +1393,146 @@
       gap: 18px;
     }
 
+    .footer-content-wrapper {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .footer-col.about {
+      gap: 20px;
+    }
+
     .footer-logo {
       height: 38px;
       width: auto;
       object-fit: contain;
       filter: brightness(0) invert(1);
       opacity: 0.75;
+      margin-bottom: 10px;
     }
 
     .footer-tagline {
       font-size: 15px;
       font-weight: 300;
       color: var(--gray);
-      text-align: center;
-      max-width: 400px;
       line-height: 1.65;
       letter-spacing: -0.005em;
+    }
+
+    .footer-heading {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links a {
+      color: var(--gray);
+      font-size: 14px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--blue-light);
+    }
+
+    .footer-social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .footer-social-icons a {
+      color: var(--gray);
+      font-size: 20px;
+      transition: color 0.2s;
+    }
+    .footer-social-icons a:hover {
+      color: var(--blue-light);
+    }
+
+    .footer-contact-info {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    .footer-contact-info a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-info a:hover {
+      color: var(--blue-light);
+    }
+
+    .footer-bottom {
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 30px;
+      margin-top: 30px;
     }
 
     .footer-copy {
       font-size: 12px;
       color: rgba(255,255,255,0.16);
-      margin-top: 24px;
+      margin-top: 10px;
+    }
+
+    /* ================================================================
+       BOTÃO FLUTUANTE WHATSAPP
+    ================================================================ */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      line-height: 60px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+
+    /* Ícone do WhatsApp (usando um SVG simples ou font-awesome) */
+    .whatsapp-float svg {
+      width: 30px;
+      height: 30px;
+      fill: #fff;
     }
 
     /* ================================================================
@@ -1100,6 +1548,8 @@
     .d2 { transition-delay: 0.16s; }
     .d3 { transition-delay: 0.24s; }
     .d4 { transition-delay: 0.32s; }
+    .d5 { transition-delay: 0.40s; }
+    .d6 { transition-delay: 0.48s; }
 
     /* ================================================================
        RESPONSIVIDADE GERAL
@@ -1108,6 +1558,11 @@
       .services-grid { grid-template-columns: 1fr 1fr; }
       .reviews-grid  { grid-template-columns: 1fr 1fr; }
       .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .about-content { flex-direction: column; text-align: center; gap: 40px; }
+      .about-image-wrap { margin: 0 auto; }
+      .footer-content-wrapper { grid-template-columns: 1fr 1fr; }
+      .footer-col.about { grid-column: span 2; text-align: center; }
     }
 
     @media (max-width: 860px) {
@@ -1115,19 +1570,47 @@
       .services-grid { grid-template-columns: 1fr; }
       #section-why, #section-services, #section-for-who,
       #section-results-google, #section-results-meta,
-      #section-reviews, #section-testimonials { padding: 72px 28px; }
+      #section-reviews, #section-testimonials,
+      #section-process, #section-about, #section-cta { padding: 72px 28px; }
       #section-clients { padding: 72px 0 0; }
       .clients-title-wrap { padding: 0 28px; }
       footer { padding: 60px 28px 40px; }
       .video-wrap { display: none; }
       .reviews-grid { grid-template-columns: 1fr; }
       .testimonials-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: 1fr; }
+
+      /* Ajustes para logos do carrossel em mobile */
+      .logo-slot {
+        padding: 0 15px; /* Diminui a distância */
+      }
+      .logo-slot img {
+        height: 70px; /* Aumenta o tamanho */
+        max-width: 180px;
+      }
+      .carousel-track {
+        align-items: center; /* Garante que estejam no meio verticalmente */
+      }
+
+      /* Ordem da imagem e texto na seção "Sobre" para mobile */
+      #section-about .about-content {
+        flex-direction: column-reverse; /* Inverte a ordem: imagem antes do texto */
+      }
+      .about-image-desktop { display: none; }
+      .about-image-mobile { display: block; }
+
+      .footer-content-wrapper { grid-template-columns: 1fr; text-align: center; }
+      .footer-col.about { grid-column: span 1; }
+      .footer-col { align-items: center; }
+      .footer-social-icons { justify-content: center; }
     }
 
     @media (max-width: 560px) {
-      .why-card, .for-card { padding: 34px 22px; }
+      .why-card, .for-card, .process-card { padding: 34px 22px; }
       .service-card { padding: 30px 20px 26px; }
       .review-card { padding: 28px 22px; }
+      .about-image-wrap { width: 220px; height: 220px; }
+      .contact-form { padding: 30px 20px; }
     }
   </style>
 </head>
@@ -1143,15 +1626,19 @@
         alt="Kalli Vision"
       />
 
+      <button class="nav-close-btn" aria-label="Fechar menu de navegação">✕</button>
+
       <div class="nav-links">
         <a href="#section-why">Por que nós</a>
         <a href="#section-services">Serviços</a>
+        <a href="#section-process">Processo</a>
         <a href="#section-for-who">Para quem</a>
         <a href="#section-clients">Clientes</a>
+        <a href="#section-about">Sobre</a>
       </div>
 
       <div class="nav-btn-wrap">
-        <a href="#footer" class="btn-nav">Contato</a>
+        <a href="#section-cta" class="btn-nav">Contato</a>
       </div>
 
     </div>
@@ -1172,7 +1659,7 @@
     <!-- Imagem mobile (story — portrait) -->
     <img
       class="hero-bg-mobile"
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-14.png"
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45.png"
       alt=""
       aria-hidden="true"
       fetchpriority="high"
@@ -1198,7 +1685,7 @@
           Na Kalli Vision, tráfego não é anúncio solto. Coloque sua empresa na frente das pessoas certas, no momento certo.
         </p>
 
-        <a href="#footer" class="btn-primary fade-up d2">
+        <a href="#section-cta" class="btn-primary fade-up d2">
           Quero atrair clientes agora
         </a>
 
@@ -1269,7 +1756,7 @@
         </svg>
         <div class="service-name">Gestão de<br />Tráfego Pago</div>
         <p class="service-desc">Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong></p>
-        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+        <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
       <div class="service-card fade-up d2">
@@ -1278,7 +1765,7 @@
         </svg>
         <div class="service-name">Estrutura de<br />Funil de Vendas</div>
         <p class="service-desc">Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.</p>
-        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+        <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
       <div class="service-card fade-up d3">
@@ -1290,7 +1777,7 @@
         </svg>
         <div class="service-name">Análise e<br />Otimização Contínua</div>
         <p class="service-desc">Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.</p>
-        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+        <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
       <div class="service-card fade-up d4">
@@ -1301,9 +1788,45 @@
         </svg>
         <div class="service-name">Estratégia<br />Personalizada</div>
         <p class="service-desc">Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.</p>
-        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+        <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- NOVA SEÇÃO: COMO FUNCIONA O PROCESSO -->
+  <section id="section-process">
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">Como funciona o</p>
+      <p class="section-title-white">nosso processo</p>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-card fade-up d1">
+        <div class="process-icon-circle">1</div>
+        <div class="process-card-title">Diagnóstico do negócio</div>
+        <p class="process-card-text">Entendimento do seu serviço, público, metas e cenário atual.</p>
+      </div>
+
+      <div class="process-card fade-up d2">
+        <div class="process-icon-circle">2</div>
+        <div class="process-card-title">Planejamento estratégico</div>
+        <p class="process-card-text">Definição de canais, campanhas, funil e orçamento ideal.</p>
+      </div>
+
+      <div class="process-card fade-up d3">
+        <div class="process-icon-circle">3</div>
+        <div class="process-card-title">Criação e estruturação</div>
+        <p class="process-card-text">Criação dos anúncios, públicos e estrutura de campanha.</p>
+      </div>
+
+      <div class="process-card fade-up d4">
+        <div class="process-icon-circle">4</div>
+        <div class="process-card-title">Acompanhamento e otimização</div>
+        <p class="process-card-text">Análise constante para melhorar performance e reduzir custos.</p>
+      </div>
     </div>
   </section>
 
@@ -1606,32 +2129,178 @@
 
   <div class="divider"></div>
 
+  <!-- NOVA SEÇÃO: SOBRE A KALLI VISION -->
+  <section id="section-about">
+    <div class="about-content">
+      <div class="about-image-wrap fade-up">
+        <!-- Foto para Desktop -->
+        <img class="about-image-desktop" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/felipe-kalli-vision.png" alt="Felipe - Kalli Vision" />
+        <!-- Foto para Mobile -->
+        <img class="about-image-mobile" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/felipe-kalli-vision.png" alt="Felipe - Kalli Vision" />
+      </div>
+      <div class="about-text-block fade-up d1">
+        <h2 class="about-title">Quem está por trás da Kalli Vision</h2>
+        <p class="about-para">
+          A Kalli Vision nasceu com um objetivo claro: usar o tráfego pago como ferramenta de crescimento real para empresas.
+        </p>
+        <p class="about-para">
+          Nosso foco não é rodar anúncios, mas construir estratégia, analisar dados e acompanhar de perto cada campanha.
+        </p>
+        <p class="about-para">
+          Tráfego bem feito gera resultado.<br />
+          Tráfego sem estratégia gera prejuízo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- NOVA SEÇÃO: VAMOS ANALISAR SEU NEGÓCIO? (FORMULÁRIO) -->
+  <section id="section-cta">
+    <div class="fade-up">
+      <h2 class="cta-title">Vamos analisar seu <span>negócio?</span></h2>
+      <p class="cta-para">
+        Preencha o formulário abaixo para agendarmos uma conversa estratégica.
+      </p>
+
+      <form class="contact-form fade-up d1" action="YOUR_GOOGLE_SHEETS_FORM_ENDPOINT" method="POST" target="_blank">
+        <div class="form-group">
+          <label for="name">Nome Completo:</label>
+          <input type="text" id="name" name="Nome Completo" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="E-mail" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Telefone (WhatsApp):</label>
+          <input type="tel" id="phone" name="Telefone" required>
+        </div>
+        <div class="form-group">
+          <label for="company">Nome da Empresa:</label>
+          <input type="text" id="company" name="Nome da Empresa" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Qual seu principal objetivo com tráfego pago?</label>
+          <textarea id="message" name="Objetivo" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Enviar e Agendar Conversa</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- FOOTER -->
   <footer id="footer">
-    <img
-      class="footer-logo"
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
-      alt="Kalli Vision"
-    />
-    <p class="footer-tagline">
-      Tráfego pago focado em resultado.<br />
-      Coloque sua empresa na frente das pessoas certas, no momento certo.
-    </p>
-    <a href="https://wa.me/55" class="btn-primary" target="_blank" rel="noopener">
-      Quero atrair clientes agora
-    </a>
-    <p class="footer-copy">© 2026 Kalli Vision. Todos os direitos reservados.</p>
+    <div class="footer-content-wrapper">
+      <div class="footer-col about">
+        <img
+          class="footer-logo"
+          src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+          alt="Kalli Vision"
+        />
+        <p class="footer-tagline">
+          Tráfego pago focado em resultado.<br />
+          Coloque sua empresa na frente das pessoas certas, no momento certo.
+        </p>
+        <div class="footer-social-icons">
+          <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.271 0-4.192 1.58-4.192 4.615v3.385z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.073 4.948.073 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.381 1.11-2.5 2.48-2.5s2.48 1.119 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-10.029-3.979v-1.89z"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Navegação</h3>
+        <ul class="footer-links">
+          <li><a href="#section-why">Por que nós</a></li>
+          <li><a href="#section-services">Serviços</a></li>
+          <li><a href="#section-process">Processo</a></li>
+          <li><a href="#section-for-who">Para quem</a></li>
+          <li><a href="#section-clients">Clientes</a></li>
+          <li><a href="#section-about">Sobre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Serviços</h3>
+        <ul class="footer-links">
+          <li><a href="#section-services">Gestão de Tráfego Pago</a></li>
+          <li><a href="#section-services">Funil de Vendas</a></li>
+          <li><a href="#section-services">Otimização Contínua</a></li>
+          <li><a href="#section-services">Estratégia Personalizada</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Contato</h3>
+        <div class="footer-contact-info">
+          <p>E-mail: <a href="mailto:contato@kallivision.com">contato@kallivision.com</a></p>
+          <p>Telefone: <a href="tel:+5511999999999">+55 (11) 99999-9999</a></p>
+          <p>Endereço: Rua Exemplo, 123<br>Bairro, Cidade - SP, 00000-000</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Kalli Vision. Todos os direitos reservados.</p>
+      <p class="footer-copy">Kalli Vision Agência de Marketing Digital | CNPJ: XX.XXX.XXX/XXXX-XX</p>
+      <p class="footer-copy" style="margin-top: 5px;">
+        <a href="#" style="color: rgba(255,255,255,0.16); text-decoration: underline;">Política de Privacidade</a> |
+        <a href="#" style="color: rgba(255,255,255,0.16); text-decoration: underline;">Termos de Uso</a>
+      </p>
+    </div>
   </footer>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+    <svg viewBox="0 0 24 24">
+      <path d="M12.04 2.02c-5.47 0-9.91 4.44-9.91 9.91 0 1.75.46 3.45 1.32 4.95l-1.4 5.14 5.27-1.37c1.45.79 3.08 1.22 4.72 1.22 5.47 0 9.91-4.44 9.91-9.91s-4.44-9.91-9.91-9.91zm4.84 14.65c-.16.27-.64.54-1.09.61-.45.07-.98.11-1.56-.16-.6-.27-1.42-.52-2.39-1.46-.97-.94-1.62-2.1-1.81-2.42-.19-.32-.02-.5-.02-.69.01-.19.05-.32.11-.45.07-.13.16-.27.29-.42.13-.16.27-.27.4-.42.13-.16.2-.27.29-.42.09-.16.05-.27-.02-.4-.07-.13-.45-1.08-.61-1.46-.16-.38-.32-.32-.45-.32-.13 0-.29-.02-.45-.02-.16 0-.42.05-.64.27-.22.22-.84.84-.84 2.04 0 1.2.86 2.36.98 2.51.13.16 1.7 2.61 4.1 3.61 2.4.99 2.4 1.62 2.69 1.81.29.19.54.27.73.27.19 0 .54-.02.73-.16.19-.13.64-.27.73-.4.09-.13.16-.27.22-.4.07-.13.07-.27.07-.45-.02-.19-.02-.32-.05-.45z"/>
+    </svg>
+  </a>
 
   <!-- JAVASCRIPT -->
   <script>
     /* ----------------------------------------------------------------
-       1. NAVBAR — expande ao rolar 80px
+       1. NAVBAR — expande ao rolar 80px (PC) ou ao clicar (Mobile)
     ---------------------------------------------------------------- */
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('expanded', window.scrollY > 80);
-    }, { passive: true });
+    const navPill = document.querySelector('.nav-pill');
+    const navCloseBtn = document.querySelector('.nav-close-btn');
+
+    // Comportamento para desktop (expande ao rolar)
+    function handleScrollNavbar() {
+      if (window.innerWidth > 860) { // Aplica apenas para desktop
+        navbar.classList.toggle('expanded', window.scrollY > 80);
+      }
+    }
+
+    // Comportamento para mobile (expande ao clicar)
+    function handleClickNavbar() {
+      if (window.innerWidth <= 860) { // Aplica apenas para mobile
+        navbar.classList.toggle('expanded');
+      }
+    }
+
+    window.addEventListener('scroll', handleScrollNavbar, { passive: true });
+    navPill.addEventListener('click', handleClickNavbar);
+    navCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Impede que o clique no botão feche a navbar e reabra imediatamente
+      navbar.classList.remove('expanded');
+    });
+
+    // Resetar navbar para estado inicial ao redimensionar de mobile para desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860) {
+        navbar.classList.remove('expanded'); // Garante que não fique expandida se redimensionar de mobile
+        handleScrollNavbar(); // Aplica o comportamento de scroll se já estiver rolado
+      } else {
+        navbar.classList.remove('expanded'); // Garante que não fique expandida se redimensionar de desktop para mobile
+      }
+    });
+
 
     /* ----------------------------------------------------------------
        2. ANIMAÇÕES DE ENTRADA — IntersectionObserver
@@ -1684,6 +2353,7 @@
       let timer    = null;
 
       /* Cria dots */
+      dotsEl.innerHTML = ''; // Limpa dots existentes antes de criar
       slides.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.className = 'results-dot' + (i === 0 ? ' active' : '');
