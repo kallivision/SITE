@@ -1,1015 +1,1756 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kalli Vision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalli Vision — Tráfego Pago com Resultado</title>
+
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
-      --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --blue-1: #3b82f6;
-      --blue-2: #1d4ed8;
-      --blue-3: #60a5fa;
-      --glass-bg: rgba(255,255,255,0.06);
-      --glass-border: rgba(255,255,255,0.13);
-      --glass-blur: blur(22px);
+      --bg:          #00060D;
+      --blue:        #1a6fff;
+      --blue-light:  #4d9fff;
+      --white:       #ffffff;
+      --gray:        #8a9ab5;
+      --gray-light:  #c0cde0;
+      --green:       #22c55e;
+      --red:         #ef4444;
+      --font:        "Helvetica World", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
+      background: var(--bg);
+      color: var(--white);
       font-family: var(--font);
-      background: #030b1a;
       overflow-x: hidden;
-      color: #fff;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ══════════════════════════════════════
-       NAVBAR — DESKTOP
-    ══════════════════════════════════════ */
-    .navbar {
+    /* ================================================================
+       NAVBAR
+    ================================================================ */
+    #navbar {
       position: fixed;
-      top: 28px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 1000;
-      width: 190px;
-      height: 62px;
-      border-radius: 50px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-      transition:
-        width .65s cubic-bezier(.4,0,.2,1),
-        background .4s,
-        box-shadow .4s,
-        border-color .4s;
+      z-index: 9999;
+    }
+
+    .nav-pill {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
+      justify-content: center;
+      gap: 0;
+      width: 170px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(5, 15, 35, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
       overflow: hidden;
       white-space: nowrap;
+      transition:
+        width 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .navbar.scrolled {
-      width: min(860px, 92vw);
-      background: rgba(10,20,50,.55);
-      box-shadow: 0 12px 48px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.12);
-      border-color: rgba(59,130,246,.22);
+    #navbar.expanded .nav-pill {
+      width: min(860px, 94vw);
+      padding: 10px 28px;
+      justify-content: space-between;
     }
 
-    .nav-logo img {
-      height: 36px; width: auto; object-fit: contain; display: block;
-      transition: filter .3s;
+    .nav-logo {
+      height: 30px;
+      width: auto;
+      max-width: 130px;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+      opacity: 1;
+      visibility: visible;
     }
-    .nav-logo img:hover { filter: drop-shadow(0 0 10px rgba(59,130,246,.55)); }
 
     .nav-links {
-      display: flex; align-items: center;
-      opacity: 0; max-width: 0; overflow: hidden;
-      transition: opacity .4s ease .2s, max-width .6s cubic-bezier(.4,0,.2,1);
-    }
-    .navbar.scrolled .nav-links { opacity: 1; max-width: 600px; }
-
-    .nav-links a {
-      font-family: var(--font);
-      font-size: 13.5px; font-weight: 500;
-      letter-spacing: -.01em; color: rgba(255,255,255,.78);
-      text-decoration: none; padding: 9px 18px;
-      border-radius: 30px; position: relative;
-      transition: color .25s, background .25s;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute;
-      bottom: 4px; left: 50%;
-      transform: translateX(-50%) scaleX(0);
-      width: 60%; height: 1.5px;
-      background: var(--blue-1); border-radius: 2px;
-      transition: transform .3s ease;
-    }
-    .nav-links a:hover { color: #fff; background: rgba(255,255,255,.07); }
-    .nav-links a:hover::after { transform: translateX(-50%) scaleX(1); }
-
-    .nav-btn {
-      opacity: 0; max-width: 0; overflow: hidden; flex-shrink: 0;
-      transition: opacity .4s ease .3s, max-width .6s cubic-bezier(.4,0,.2,1);
-    }
-    .navbar.scrolled .nav-btn { opacity: 1; max-width: 160px; }
-
-    .nav-btn a {
-      display: inline-block;
-      padding: 9px 22px;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      border-radius: 30px;
-      border: none; outline: none;
-      color: #fff; font-family: var(--font);
-      font-size: 13px; font-weight: 600;
-      letter-spacing: -.01em; text-decoration: none;
-      white-space: nowrap;
-      box-shadow: 0 0 18px rgba(59,130,246,.35);
-      transition: box-shadow .25s, transform .2s;
-      -webkit-appearance: none;
-    }
-    .nav-btn a:hover { box-shadow: 0 0 30px rgba(59,130,246,.65); transform: translateY(-1px); }
-
-    /* ══════════════════════════════════════
-       NAVBAR — MOBILE
-    ══════════════════════════════════════ */
-    .navbar-mobile {
-      display: none;
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      width: calc(100vw - 28px);
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    /* barra principal */
-    .mob-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      height: 54px;
-      padding: 0 14px;
-      border-radius: 50px;
-      background: rgba(8,18,46,.72);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 8px 32px rgba(0,0,0,.45);
-      gap: 8px;
-    }
-
-    .mob-logo img {
-      height: 26px; width: auto; object-fit: contain; display: block;
-    }
-
-    .mob-center-links {
-      display: flex; align-items: center; gap: 0; flex: 1; justify-content: center;
-    }
-
-    .mob-center-links a {
-      font-family: var(--font);
-      font-size: 12.5px; font-weight: 500;
-      letter-spacing: -.01em; color: rgba(255,255,255,.78);
-      text-decoration: none; padding: 6px 10px;
-      border-radius: 30px;
-      transition: color .2s, background .2s;
-    }
-    .mob-center-links a:active { color: #fff; background: rgba(255,255,255,.08); }
-
-    .mob-right {
-      display: flex; align-items: center; gap: 7px; flex-shrink: 0;
-    }
-
-    .mob-contact-btn {
-      display: inline-flex; align-items: center;
-      padding: 7px 14px;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      border-radius: 30px;
-      border: none; outline: none;
-      color: #fff; font-family: var(--font);
-      font-size: 12px; font-weight: 600;
-      letter-spacing: -.01em; text-decoration: none;
-      box-shadow: 0 0 14px rgba(59,130,246,.4);
-      -webkit-appearance: none; white-space: nowrap;
-    }
-
-    /* botão + */
-    .mob-more-btn {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.2);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; flex-shrink: 0;
-      transition: background .25s, transform .35s, border-color .25s;
-    }
-    .mob-more-btn.open {
-      transform: rotate(45deg);
-      background: rgba(59,130,246,.28);
-      border-color: rgba(59,130,246,.6);
-    }
-    .mob-more-btn svg {
-      width: 15px; height: 15px;
-      stroke: #fff; stroke-width: 2.5; fill: none;
-    }
-
-    /* drawer dropdown */
-    .mob-drawer {
-      overflow: hidden;
-      max-height: 0;
+      gap: 30px;
       opacity: 0;
-      margin-top: 8px;
-      transition: max-height .5s cubic-bezier(.4,0,.2,1), opacity .35s ease;
-    }
-    .mob-drawer.open { max-height: 600px; opacity: 1; }
-
-    .mob-drawer-inner {
-      background: rgba(8,18,46,.82);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 22px;
-      padding: 22px 18px 18px;
-      display: flex; flex-direction: column; gap: 4px;
+      pointer-events: none;
+      transform: translateX(12px);
+      transition:
+        opacity 0.35s ease 0.18s,
+        transform 0.35s ease 0.18s;
     }
 
-    .mob-drawer-logo {
-      display: flex; justify-content: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      margin-bottom: 6px;
-    }
-    .mob-drawer-logo img { height: 32px; width: auto; object-fit: contain; }
-
-    .mob-nav-item {
-      font-family: var(--font);
-      font-size: 15px; font-weight: 500;
-      letter-spacing: -.01em; color: rgba(255,255,255,.78);
-      text-decoration: none; padding: 13px 14px;
-      border-radius: 14px; display: block;
-      transition: background .2s, color .2s;
-    }
-    .mob-nav-item:active { background: rgba(255,255,255,.07); color: #fff; }
-
-    .mob-drawer-sep {
-      height: 1px;
-      background: rgba(255,255,255,.07);
-      margin: 6px 0;
+    #navbar.expanded .nav-links {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0);
     }
 
-    .mob-drawer-cta {
-      display: block; text-align: center;
-      margin-top: 8px; padding: 14px;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      border-radius: 14px;
-      border: none; outline: none;
-      color: #fff; font-family: var(--font);
-      font-size: 14px; font-weight: 700;
+    .nav-links a {
+      color: rgba(255,255,255,0.70);
+      font-size: 13.5px;
+      font-weight: 400;
       text-decoration: none;
-      box-shadow: 0 0 20px rgba(59,130,246,.4);
-      transition: box-shadow .25s, transform .2s;
-      -webkit-appearance: none;
-    }
-    .mob-drawer-cta:active { transform: scale(.97); }
-
-    /* ══════════════════════════════════════
-       HERO
-    ══════════════════════════════════════ */
-    .hero {
-      position: relative;
-      width: 100%; min-height: 100vh;
-      display: flex; align-items: center;
-      overflow: hidden;
-    }
-
-    /* vídeo desktop */
-    .hero-video-desktop {
-      position: absolute; inset: 0; z-index: 0;
-    }
-    .hero-video-desktop iframe {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: calc(100% + 120px);
-      height: calc(100% + 80px);
-      min-width: 100%; min-height: 100%;
-      border: none; pointer-events: none;
-    }
-
-    /* vídeo mobile — autoplay sem play button */
-    .hero-video-mobile {
-      display: none;
-      position: relative;
-      width: 100%; z-index: 0; overflow: hidden;
-    }
-    .hero-video-mobile-wrap {
-      position: relative; width: 100%; padding-top: 177.78%;
-      /* esconde qualquer overlay de play que o iframe possa injetar */
-      pointer-events: none;
-    }
-    .hero-video-mobile-wrap iframe {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-      border: none;
-    }
-
-    /* overlay azul */
-    .hero-overlay {
-      position: absolute; inset: 0; z-index: 1;
-      background:
-        radial-gradient(ellipse 65% 90% at 0% 50%, rgba(10,30,90,.78) 0%, transparent 68%),
-        linear-gradient(to right,
-          rgba(3,11,26,.92) 0%,
-          rgba(3,11,26,.58) 35%,
-          rgba(3,11,26,.18) 60%,
-          transparent 80%);
-      pointer-events: none;
-    }
-
-    /* conteúdo */
-    .hero-content {
-      position: relative; z-index: 2;
-      padding: 160px 7% 100px;
-      max-width: 560px;
-    }
-
-    .hero-content h1 {
       font-family: var(--font);
-      font-size: clamp(28px, 3.4vw, 52px);
-      font-weight: 700; color: #fff;
-      line-height: 1.1; letter-spacing: -.045em;
-      margin-bottom: 16px;
+      transition: color 0.2s;
     }
+    .nav-links a:hover { color: #fff; }
 
-    .hero-content h1 .blue {
-      background: linear-gradient(100deg, var(--blue-3) 0%, var(--blue-1) 50%, #1d7cf7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-
-    .hero-content p {
-      font-family: var(--font);
-      font-size: clamp(13px, 1.2vw, 17px);
-      color: rgba(255,255,255,.5);
-      line-height: 1.45; letter-spacing: -.01em;
-      margin-bottom: 42px; max-width: 420px;
-    }
-
-    .cta-btn {
-      display: inline-block; padding: 18px 42px;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      border-radius: 12px; border: none; outline: none;
-      color: #fff; font-family: var(--font);
-      font-size: 16px; font-weight: 600;
-      letter-spacing: -.02em; text-decoration: none;
-      box-shadow: 0 6px 30px rgba(29,78,216,.5);
-      transition: transform .25s, box-shadow .25s;
-      -webkit-appearance: none;
-    }
-    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(29,78,216,.7); }
-
-    /* ══════════════════════════════════════
-       COMPARAÇÃO
-    ══════════════════════════════════════ */
-    .comparison-section {
-      position: relative;
-      width: 100%; min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 100px 6%;
-      overflow: hidden; background: #030b1a;
-    }
-
-    .comparison-section::before {
-      content: ''; position: absolute;
-      width: 700px; height: 700px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(25,65,160,.35) 0%, transparent 70%);
-      top: 50%; right: -8%; transform: translateY(-50%);
-      pointer-events: none;
-    }
-
-    .comparison-title {
-      font-family: var(--font);
-      font-size: clamp(22px, 3vw, 46px);
-      font-weight: 700; letter-spacing: -.04em;
-      line-height: 1.18; text-align: center;
-      margin-bottom: 72px; position: relative; z-index: 2;
-    }
-    .comparison-title .t-blue {
-      background: linear-gradient(100deg, #60a5fa, #4b8df0);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      display: block;
-    }
-    .comparison-title .t-white { color: #fff; display: block; }
-
-    .comparison-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 28px; width: 100%; max-width: 1000px;
-      position: relative; z-index: 2;
-    }
-
-    .comp-card {
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.04);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      padding: 48px 48px 52px;
-      display: flex; flex-direction: column; align-items: flex-start;
-      position: relative; overflow: hidden;
-      transition:
-        transform .38s cubic-bezier(.4,0,.2,1),
-        box-shadow .38s,
-        border-color .38s;
-    }
-    .comp-card::after {
-      content: ''; position: absolute;
-      top: -80px; right: -80px;
-      width: 180px; height: 180px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.14) 0%, transparent 70%);
-      opacity: 0; pointer-events: none;
-      transition: opacity .38s;
-    }
-    .comp-card:hover,
-    .comp-card.mob-active {
-      transform: translateY(-8px);
-      box-shadow: 0 22px 52px rgba(0,0,0,.45), 0 0 0 1px rgba(59,130,246,.4), 0 0 32px rgba(59,130,246,.1);
-      border-color: rgba(59,130,246,.45);
-    }
-    .comp-card:hover::after,
-    .comp-card.mob-active::after { opacity: 1; }
-
-    .card-icon-circle {
-      width: 60px; height: 60px; border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,.25);
-      background: rgba(255,255,255,.04);
-      display: flex; align-items: center; justify-content: center;
-      align-self: center; margin-bottom: 20px;
-      transition: transform .35s, box-shadow .35s, border-color .35s;
-    }
-    .comp-card:hover .card-icon-circle,
-    .comp-card.mob-active .card-icon-circle {
-      transform: scale(1.08);
-      box-shadow: 0 0 22px rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.4);
-    }
-    .card-icon-circle svg { width: 26px; height: 26px; stroke: rgba(255,255,255,.5); stroke-width: 2; fill: none; }
-
-    .card-logo-pill { align-self: center; margin-bottom: 28px; transition: transform .35s, filter .35s; }
-    .card-logo-pill img { height: 52px; width: auto; object-fit: contain; }
-    .comp-card:hover .card-logo-pill,
-    .comp-card.mob-active .card-logo-pill {
-      transform: scale(1.04);
-      filter: drop-shadow(0 0 12px rgba(59,130,246,.35));
-    }
-
-    .card-heading {
-      font-family: var(--font);
-      font-size: clamp(17px, 1.8vw, 24px); font-weight: 600;
-      letter-spacing: -.03em; line-height: 1.15;
-      color: #5b9cf6; align-self: center; margin-bottom: 32px;
-    }
-
-    .card-list { display: flex; flex-direction: column; gap: 18px; width: 100%; }
-    .card-item { display: flex; align-items: flex-start; gap: 14px; }
-
-    .icon-x { flex-shrink: 0; margin-top: 2px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
-    .icon-x svg { width: 18px; height: 18px; stroke: #e05252; stroke-width: 2.5; fill: none; }
-
-    .icon-check { flex-shrink: 0; margin-top: 2px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
-    .icon-check svg { width: 18px; height: 18px; stroke: #3ecf6e; stroke-width: 2.8; fill: none; }
-
-    .card-item-text {
-      font-family: var(--font);
-      font-size: clamp(13px, 1.05vw, 15.5px);
-      letter-spacing: -.01em; line-height: 1.45;
-      color: rgba(255,255,255,.68);
-    }
-
-    /* ══════════════════════════════════════
-       SERVIÇOS
-    ══════════════════════════════════════ */
-    .section-services { background: #f0f2f5; padding: 100px 5%; }
-
-    .services-header { text-align: center; margin-bottom: 64px; }
-    .services-header h2 {
-      font-family: var(--font);
-      font-size: clamp(28px, 3.2vw, 52px); font-weight: 700;
-      letter-spacing: -.04em; line-height: 1.12;
-      background: linear-gradient(135deg, #4b9cf5, #2563eb, #1e40af);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-
-    .services-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 18px; max-width: 1400px; margin: 0 auto;
-    }
-
-    .svc-card {
-      background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 60%, #0d1e3a 100%);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.08);
-      padding: 42px 32px 36px;
-      display: flex; flex-direction: column; align-items: flex-start;
-      min-height: 380px; position: relative; overflow: hidden;
-      cursor: default;
-      transition:
-        transform .38s cubic-bezier(.4,0,.2,1),
-        box-shadow .38s, border-color .38s;
-    }
-    .svc-card::before {
-      content: ''; position: absolute;
-      top: -60px; right: -60px;
-      width: 160px; height: 160px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,.15) 0%, transparent 70%);
+    .nav-btn-wrap {
       opacity: 0;
-      transition: opacity .38s, transform .38s;
-    }
-    .svc-card:hover,
-    .svc-card.mob-active {
-      transform: translateY(-10px);
-      box-shadow: 0 24px 56px rgba(0,0,0,.45), 0 0 0 1px rgba(59,130,246,.5), 0 0 36px rgba(59,130,246,.14);
-      border-color: rgba(59,130,246,.5);
-    }
-    .svc-card:hover::before,
-    .svc-card.mob-active::before { opacity: 1; transform: scale(1.15); }
-
-    .svc-icon { width: 54px; height: 54px; margin-bottom: 26px; align-self: center; transition: transform .35s, filter .35s; }
-    .svc-card:hover .svc-icon,
-    .svc-card.mob-active .svc-icon {
-      transform: scale(1.1) translateY(-2px);
-      filter: drop-shadow(0 0 10px rgba(59,130,246,.5));
-    }
-    .svc-icon svg {
-      width: 100%; height: 100%;
-      stroke: rgba(180,210,255,.8); stroke-width: 1.3; fill: none;
-      stroke-linecap: round; stroke-linejoin: round;
+      pointer-events: none;
+      transform: translateX(12px);
+      transition:
+        opacity 0.35s ease 0.22s,
+        transform 0.35s ease 0.22s;
+      flex-shrink: 0;
     }
 
-    .svc-card h3 {
+    #navbar.expanded .nav-btn-wrap {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0);
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 22px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
       font-family: var(--font);
-      font-size: clamp(17px, 1.6vw, 21px); font-weight: 600;
-      letter-spacing: -.03em; line-height: 1.2; text-align: center;
-      background: linear-gradient(135deg, #60a5fa, #3b82f6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 18px; align-self: center;
-      transition: filter .3s;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
     }
-    .svc-card:hover h3, .svc-card.mob-active h3 { filter: brightness(1.15); }
-
-    .svc-card p {
-      font-family: var(--font); font-size: 13.5px;
-      color: rgba(255,255,255,.5); line-height: 1.6;
-      letter-spacing: -.005em; flex: 1;
-    }
-    .svc-card p strong { color: rgba(255,255,255,.85); font-weight: 600; }
-
-    .svc-btn {
-      display: flex; align-items: center; justify-content: space-between;
-      width: 100%; margin-top: 32px; padding: 12px 20px;
-      border-radius: 50px;
-      border: 1px solid rgba(59,130,246,.45);
-      background: transparent; outline: none; -webkit-appearance: none;
-      color: rgba(255,255,255,.72);
-      font-family: var(--font); font-size: 12px; font-weight: 600;
-      letter-spacing: .1em; text-transform: uppercase;
-      text-decoration: none; cursor: pointer;
-      transition: background .3s, border-color .3s, color .3s, box-shadow .3s, transform .25s;
-    }
-    .svc-btn:hover {
-      background: rgba(59,130,246,.12);
-      border-color: rgba(59,130,246,.8);
-      color: #fff; box-shadow: 0 0 18px rgba(59,130,246,.2);
-      transform: translateX(3px);
-    }
-    .svc-btn-arrow {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1px solid rgba(59,130,246,.5);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: background .3s, border-color .3s;
-    }
-    .svc-btn:hover .svc-btn-arrow { background: rgba(59,130,246,.25); border-color: rgba(59,130,246,.9); }
-    .svc-btn-arrow svg { width: 13px; height: 13px; stroke: #60a5fa; stroke-width: 2.5; fill: none; }
-
-    /* ══════════════════════════════════════
-       RESULTADOS
-    ══════════════════════════════════════ */
-    .section-results { background: #030b1a; padding: 100px 7%; border-top: 1px solid rgba(255,255,255,.06); }
-
-    .section-tag {
-      font-family: var(--font); font-size: 11px; font-weight: 600;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: var(--blue-1); margin-bottom: 14px;
-    }
-    .section-title {
-      font-family: var(--font); font-size: clamp(26px, 2.8vw, 44px); font-weight: 700;
-      letter-spacing: -.04em; line-height: 1.1; color: #fff; margin-bottom: 14px;
-    }
-    .section-title span {
-      background: linear-gradient(100deg, var(--blue-3), var(--blue-1));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    .btn-nav:hover {
+      background: #3d7fff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26,111,255,0.5);
     }
 
-    .results-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 60px; }
-
-    .result-item {
-      background: var(--glass-bg); border: 1px solid var(--glass-border);
-      border-radius: 18px; padding: 32px 24px; text-align: center;
-      transition: transform .32s cubic-bezier(.4,0,.2,1), box-shadow .32s, border-color .32s;
-    }
-    .result-item:hover,
-    .result-item.mob-active {
-      transform: translateY(-7px);
-      box-shadow: 0 18px 44px rgba(0,0,0,.4), 0 0 0 1px rgba(59,130,246,.42);
-      border-color: rgba(59,130,246,.48);
-    }
-    .result-number {
-      font-family: var(--font); font-size: clamp(30px, 3vw, 46px); font-weight: 700;
-      letter-spacing: -.05em; line-height: 1;
-      background: linear-gradient(100deg, var(--blue-3), var(--blue-1));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 8px;
-    }
-    .result-label { font-family: var(--font); font-size: 13px; color: rgba(255,255,255,.42); letter-spacing: -.01em; line-height: 1.4; }
-
-    /* ══════════════════════════════════════
-       PROCESSO
-    ══════════════════════════════════════ */
-    .section-process { background: linear-gradient(160deg, #040e22, #071530); padding: 100px 7%; }
-
-    .section-subtitle {
-      font-family: var(--font); font-size: clamp(13px, 1.1vw, 16px);
-      color: rgba(255,255,255,.42); line-height: 1.5; letter-spacing: -.01em;
-      max-width: 480px; margin-top: 10px; margin-bottom: 60px;
+    /* ================================================================
+       HERO — DESKTOP
+    ================================================================ */
+    #hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
     }
 
-    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; position: relative; }
-    .process-steps::before {
-      content: ''; position: absolute;
-      top: 35px; left: 10%; right: 10%; height: 1px;
-      background: linear-gradient(to right, transparent, rgba(59,130,246,.35), transparent);
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right center;
+      display: block;
       z-index: 0;
     }
 
-    .step {
-      position: relative; z-index: 1;
-      text-align: center; padding: 32px 20px;
-      border-radius: 18px; border: 1px solid var(--glass-border); background: var(--glass-bg);
-      transition: transform .32s cubic-bezier(.4,0,.2,1), box-shadow .32s, border-color .32s, background .32s;
+    /* Imagem mobile — oculta no desktop */
+    .hero-bg-mobile {
+      display: none;
     }
-    .step:hover,
-    .step.mob-active {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 46px rgba(0,0,0,.4), 0 0 0 1px rgba(59,130,246,.42);
-      border-color: rgba(59,130,246,.5); background: rgba(255,255,255,.08);
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0,6,13,0.94) 0%,
+        rgba(0,6,13,0.82) 38%,
+        rgba(0,6,13,0.28) 65%,
+        rgba(0,6,13,0.05) 100%
+      );
+      z-index: 1;
     }
-    .step-number {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 46px; height: 46px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      font-family: var(--font); font-size: 16px; font-weight: 700; color: #fff;
-      margin: 0 auto 18px;
-      box-shadow: 0 0 20px rgba(59,130,246,.3);
-      transition: box-shadow .3s, transform .3s;
+
+    .hero-glow {
+      position: absolute;
+      top: 15%;
+      left: 3%;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(26,111,255,0.18) 0%,
+        transparent 68%
+      );
+      z-index: 1;
+      pointer-events: none;
+      animation: breathe 6s ease-in-out infinite alternate;
     }
-    .step:hover .step-number, .step.mob-active .step-number { box-shadow: 0 0 32px rgba(59,130,246,.6); transform: scale(1.1); }
-    .step h4 { font-family: var(--font); font-size: 15px; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; color: #fff; margin-bottom: 8px; }
-    .step p { font-family: var(--font); font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.5; letter-spacing: -.005em; }
 
-    /* ══════════════════════════════════════
-       CONTATO
-    ══════════════════════════════════════ */
-    .section-contact { background: #030b1a; padding: 100px 7%; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
-
-    .contact-card {
-      max-width: 600px; margin: 0 auto;
-      background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border); border-radius: 24px; padding: 60px 48px;
-      transition: border-color .35s, box-shadow .35s, transform .35s;
+    @keyframes breathe {
+      from { opacity: 0.5; transform: scale(1); }
+      to   { opacity: 1;   transform: scale(1.1); }
     }
-    .contact-card:hover {
-      border-color: rgba(59,130,246,.38);
-      box-shadow: 0 22px 60px rgba(0,0,0,.4), 0 0 44px rgba(59,130,246,.09);
-      transform: translateY(-4px);
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 72px;
+      width: 100%;
     }
-    .contact-card h2 { font-family: var(--font); font-size: clamp(22px, 2.5vw, 36px); font-weight: 700; letter-spacing: -.04em; line-height: 1.1; margin-bottom: 14px; }
-    .contact-card p { font-family: var(--font); font-size: 15px; color: rgba(255,255,255,.42); line-height: 1.5; letter-spacing: -.01em; margin-bottom: 36px; }
 
-    .btn-cta-large {
-      display: inline-block; padding: 20px 52px;
-      background: linear-gradient(135deg, var(--blue-1), var(--blue-2));
-      border-radius: 14px; border: none; outline: none;
-      color: #fff; font-family: var(--font); font-size: 16px; font-weight: 700;
-      letter-spacing: -.02em; text-decoration: none;
-      box-shadow: 0 8px 32px rgba(29,78,216,.5);
-      transition: transform .25s, box-shadow .25s;
-      -webkit-appearance: none;
+    .hero-text-block {
+      max-width: 660px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
     }
-    .btn-cta-large:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(29,78,216,.7); }
 
-    /* ══════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════ */
-    footer {
-      background: #020810;
-      border-top: 1px solid rgba(255,255,255,.05);
-      padding: 32px 7%;
-      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    /* Agrupa h1 + h2 sem gap entre eles */
+    .hero-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      line-height: 1.12;
     }
-    footer img { height: 28px; opacity: .7; transition: opacity .3s; }
-    footer img:hover { opacity: 1; }
-    footer p { font-family: var(--font); font-size: 12px; color: rgba(255,255,255,.28); letter-spacing: -.01em; }
 
-    /* ══════════════════════════════════════
-       RESPONSIVE — MOBILE
-    ══════════════════════════════════════ */
-    @media (max-width: 768px) {
+    .hero-title-white {
+      font-size: clamp(32px, 3.8vw, 52px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--white);
+    }
 
-      .navbar { display: none; }
-      .navbar-mobile { display: flex; }
+    .hero-title-blue {
+      font-size: clamp(32px, 3.8vw, 52px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      background: linear-gradient(90deg, #1a6fff 0%, #4d9fff 40%, #7ec8ff 70%, #a8e0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-      /* hero */
-      .hero-video-desktop { display: none; }
-      .hero-overlay { display: none; }
-      .hero { flex-direction: column; align-items: stretch; min-height: auto; background: #030b1a; }
-      .hero-video-mobile { display: block; }
+    .hero-para {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.60;
+      letter-spacing: -0.005em;
+      max-width: 560px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 56px;
+      border-radius: 14px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 400;
+      font-family: var(--font);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      width: fit-content;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    }
+    .btn-primary:hover {
+      background: #3d7fff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(26,111,255,0.55);
+    }
+
+    /* ================================================================
+       HERO — MOBILE (layout story)
+    ================================================================ */
+    @media (max-width: 860px) {
+      #hero {
+        min-height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 0;
+      }
+
+      /* Oculta elementos de background do desktop */
+      .hero-bg,
+      .hero-overlay,
+      .hero-glow {
+        display: none;
+      }
+
+      /* Imagem mobile em formato story (9:16) */
+      .hero-bg-mobile {
+        display: block;
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        object-position: center top;
+        position: relative;
+        z-index: 0;
+      }
 
       .hero-content {
-        padding: 36px 8% 72px;
-        max-width: 100%;
-        display: flex; flex-direction: column; align-items: flex-start;
+        position: relative;
+        z-index: 2;
+        padding: 40px 28px 60px;
+        background: var(--bg);
       }
-      .hero-content h1 { font-size: clamp(26px, 7vw, 38px); text-align: left; }
-      .hero-content p { font-size: 14px; max-width: 100%; text-align: left; }
 
-      /* comparação */
-      .comparison-grid { grid-template-columns: 1fr; max-width: 480px; }
-      .comp-card { padding: 36px 28px; }
+      .hero-text-block {
+        max-width: 100%;
+        gap: 20px;
+      }
 
-      /* serviços */
-      .section-services { padding: 70px 5%; }
-      .services-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-      .svc-card { min-height: auto; padding: 32px 22px 28px; }
+      .hero-para {
+        max-width: 100%;
+      }
 
-      /* resultados */
-      .section-results { padding: 70px 6%; }
-      .results-grid { grid-template-columns: 1fr 1fr; }
-
-      /* processo */
-      .section-process { padding: 70px 6%; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
-
-      /* contato */
-      .section-contact { padding: 70px 6%; }
-      .contact-card { padding: 40px 24px; }
-
-      footer { flex-direction: column; text-align: center; }
+      .btn-primary {
+        width: 100%;
+        padding: 18px 24px;
+      }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 560px) {
+      .hero-title-white,
+      .hero-title-blue {
+        font-size: clamp(28px, 8.5vw, 38px);
+      }
+      .hero-para { font-size: 15px; }
+    }
+
+    /* ================================================================
+       LINHA DIVISÓRIA
+    ================================================================ */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        var(--bg) 0%,
+        rgba(255,255,255,0.28) 28%,
+        rgba(255,255,255,0.28) 72%,
+        var(--bg) 100%
+      );
+    }
+
+    /* ================================================================
+       SEÇÃO 2 — POR QUE A MAIORIA NÃO TEM RESULTADO
+    ================================================================ */
+    #section-why {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .section-title-blue {
+      font-size: clamp(22px, 2.6vw, 36px);
+      font-weight: 300;
+      line-height: 1.20;
+      letter-spacing: -0.018em;
+      text-align: center;
+      color: var(--blue-light);
+    }
+
+    .section-title-white {
+      font-size: clamp(22px, 2.6vw, 36px);
+      font-weight: 300;
+      line-height: 1.20;
+      letter-spacing: -0.018em;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .why-grid {
+      max-width: 1040px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .why-card {
+      border-radius: 24px;
+      padding: 48px 40px;
+      background: rgba(10,22,40,0.50);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        border-color 0.38s,
+        box-shadow 0.38s;
+    }
+
+    .why-card-bad:hover {
+      transform: translateY(-8px);
+      border-color: rgba(239,68,68,0.32);
+      box-shadow: 0 24px 60px rgba(239,68,68,0.09);
+    }
+
+    .why-card-good:hover {
+      transform: translateY(-8px);
+      border-color: rgba(26,111,255,0.38);
+      box-shadow: 0 24px 60px rgba(26,111,255,0.13);
+    }
+
+    .why-icon-circle {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.20);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .kalli-logo-card {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      margin-bottom: 18px;
+    }
+
+    .why-card-label {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--blue-light);
+      margin-bottom: 26px;
+      text-align: center;
+    }
+
+    .why-list {
+      list-style: none;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .why-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      font-size: 14.5px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.55;
+      letter-spacing: -0.005em;
+    }
+
+    .icon-x  { color: var(--red);   font-size: 15px; flex-shrink: 0; margin-top: 2px; font-weight: 600; }
+    .icon-ok { color: var(--green); font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ================================================================
+       SEÇÃO 3 — SERVIÇOS
+    ================================================================ */
+    #section-services {
+      background: #eef0f4;
+      padding: 100px 60px;
+    }
+
+    #section-services .section-title-blue {
+      color: var(--blue);
+    }
+
+    .services-grid {
+      max-width: 1180px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .service-card {
+      border-radius: 22px;
+      padding: 38px 26px 30px;
+      background: #0d1b31;
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        border-color 0.38s,
+        box-shadow 0.38s;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #1a6fff, #6ab0ff);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(26,111,255,0.32);
+      box-shadow: 0 28px 70px rgba(26,111,255,0.16);
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-svg-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+      opacity: 0.85;
+      transition: transform 0.35s, opacity 0.35s;
+    }
+    .service-card:hover .service-svg-icon {
+      transform: scale(1.12) rotate(-5deg);
+      opacity: 1;
+    }
+
+    .service-name {
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      color: var(--blue-light);
+      margin-bottom: 14px;
+    }
+
+    .service-desc {
+      font-size: 13.5px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.65;
+      letter-spacing: -0.005em;
+      flex: 1;
+    }
+    .service-desc strong {
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    .btn-saiba {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 26px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(26,111,255,0.40);
+      background: transparent;
+      color: var(--blue-light);
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--font);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+    .btn-saiba:hover {
+      background: rgba(26,111,255,0.10);
+      border-color: rgba(26,111,255,0.65);
+      color: #fff;
+    }
+
+    .btn-saiba-arrow {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(26,111,255,0.40);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .btn-saiba:hover .btn-saiba-arrow {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    /* ================================================================
+       SEÇÃO 4 — PARA QUEM
+    ================================================================ */
+    #section-for-who {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .for-who-grid {
+      max-width: 1040px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .for-card {
+      border-radius: 24px;
+      padding: 48px 40px;
+      background: rgba(10,22,40,0.50);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition:
+        transform 0.38s cubic-bezier(0.4,0,0.2,1),
+        border-color 0.38s,
+        box-shadow 0.38s;
+    }
+
+    .for-card-no:hover {
+      transform: translateY(-8px);
+      border-color: rgba(239,68,68,0.32);
+      box-shadow: 0 24px 60px rgba(239,68,68,0.09);
+    }
+    .for-card-yes:hover {
+      transform: translateY(-8px);
+      border-color: rgba(26,111,255,0.38);
+      box-shadow: 0 24px 60px rgba(26,111,255,0.13);
+    }
+
+    .for-icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: rgba(255,255,255,0.40);
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .for-card-label {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--blue-light);
+      margin-bottom: 26px;
+      text-align: center;
+    }
+
+    /* ================================================================
+       SEÇÃO 5 — CLIENTES
+    ================================================================ */
+    #section-clients {
+      background: var(--bg);
+      padding: 90px 0 0;
+      overflow: hidden;
+    }
+
+    .clients-title-wrap {
+      text-align: center;
+      padding: 0 60px;
+      margin-bottom: 60px;
+    }
+
+    .clients-heading {
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .clients-heading-white { color: var(--white); }
+    .clients-heading-blue  { color: var(--blue); }
+
+    .carousel-outer {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .carousel-outer::before,
+    .carousel-outer::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 160px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .carousel-outer::before {
+      left: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+    }
+    .carousel-outer::after {
+      right: 0;
+      background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+    }
+
+    .carousel-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      animation: infiniteScroll 26s linear infinite;
+    }
+    .carousel-track:hover { animation-play-state: paused; }
+
+    @keyframes infiniteScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* Logos mais juntas e maiores */
+    .logo-slot {
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-slot img {
+      height: 62px;
+      width: auto;
+      max-width: 170px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+    .logo-slot img:hover { opacity: 1; }
+
+    /* Vídeo — somente desktop, autoplay imediato */
+    .video-wrap {
+      margin-top: 70px;
+      position: relative;
+      width: 100%;
+      padding-top: 20.83%;
+      overflow: hidden;
+    }
+    .video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ================================================================
+       SEÇÕES DE RESULTADOS — CARROSSÉIS
+    ================================================================ */
+    #section-results-google,
+    #section-results-meta {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .results-title-wrap {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .results-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      background: rgba(26,111,255,0.10);
+      border: 1px solid rgba(26,111,255,0.22);
+      padding: 6px 18px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .results-heading {
+      font-size: clamp(24px, 2.8vw, 38px);
+      font-weight: 300;
+      letter-spacing: -0.018em;
+      line-height: 1.18;
+    }
+
+    .results-heading span {
+      background: linear-gradient(90deg, #1a6fff 0%, #4d9fff 45%, #7ec8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Wrapper do carrossel de resultados */
+    .results-carousel-wrap {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .results-track {
+      display: flex;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .results-slide {
+      min-width: 100%;
+      position: relative;
+    }
+
+    .results-slide img {
+      width: 100%;
+      height: auto;
+      max-height: 560px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: #080f1e;
+      display: block;
+    }
+
+    /* Setas de navegação */
+    .results-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,15,35,0.75);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .results-btn:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .results-btn-prev { left: 16px; }
+    .results-btn-next { right: 16px; }
+
+    /* Indicadores (dots modernos) */
+    .results-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .results-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      cursor: pointer;
+      transition: background 0.3s, width 0.35s cubic-bezier(0.4,0,0.2,1);
+      flex-shrink: 0;
+    }
+
+    .results-dot.active {
+      background: var(--blue-light);
+      width: 26px;
+    }
+
+    /* ================================================================
+       SEÇÃO DE COMENTÁRIOS
+    ================================================================ */
+    #section-reviews {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .reviews-grid {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .review-card {
+      border-radius: 20px;
+      padding: 36px 32px;
+      background: rgba(10,22,40,0.55);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s;
+    }
+
+    .review-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(26,111,255,0.28);
+      box-shadow: 0 20px 50px rgba(26,111,255,0.10);
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 4px;
+    }
+
+    .star {
+      color: #f59e0b;
+      font-size: 15px;
+    }
+
+    .review-text {
+      font-size: 14.5px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.70;
+      letter-spacing: -0.005em;
+      flex: 1;
+    }
+
+    .review-text::before {
+      content: "\201C";
+      font-size: 28px;
+      color: var(--blue-light);
+      line-height: 0.5;
+      vertical-align: -10px;
+      margin-right: 4px;
+      font-weight: 300;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .review-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a6fff, #4d9fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .review-author-info {}
+
+    .review-author-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: -0.005em;
+    }
+
+    .review-author-role {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    /* ================================================================
+       SEÇÃO DE VÍDEOS DEPOIMENTOS
+    ================================================================ */
+    #section-testimonials {
+      background: var(--bg);
+      padding: 100px 60px;
+    }
+
+    .testimonials-grid {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-video-card {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #080f1e;
+      transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s;
+    }
+
+    .testimonial-video-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(26,111,255,0.30);
+      box-shadow: 0 20px 50px rgba(26,111,255,0.12);
+    }
+
+    .testimonial-video-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+
+    .testimonial-video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .testimonial-video-label {
+      padding: 16px 20px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--gray-light);
+      letter-spacing: -0.005em;
+    }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 72px 60px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .footer-logo {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.75;
+    }
+
+    .footer-tagline {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--gray);
+      text-align: center;
+      max-width: 400px;
+      line-height: 1.65;
+      letter-spacing: -0.005em;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.16);
+      margin-top: 24px;
+    }
+
+    /* ================================================================
+       ANIMAÇÕES DE ENTRADA
+    ================================================================ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-up.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ================================================================
+       RESPONSIVIDADE GERAL
+    ================================================================ */
+    @media (max-width: 1000px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid  { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .why-grid, .for-who-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr; }
-      .mob-center-links a { font-size: 11.5px; padding: 6px 8px; }
+      #section-why, #section-services, #section-for-who,
+      #section-results-google, #section-results-meta,
+      #section-reviews, #section-testimonials { padding: 72px 28px; }
+      #section-clients { padding: 72px 0 0; }
+      .clients-title-wrap { padding: 0 28px; }
+      footer { padding: 60px 28px 40px; }
+      .video-wrap { display: none; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .why-card, .for-card { padding: 34px 22px; }
+      .service-card { padding: 30px 20px 26px; }
+      .review-card { padding: 28px 22px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══ NAVBAR DESKTOP ═══ -->
-<nav class="navbar" id="navbar">
-  <div class="nav-links">
-    <a href="#inicio">Início</a>
-    <a href="#servicos">Serviços</a>
-    <a href="#como-funciona">Como funciona</a>
-  </div>
-  <div class="nav-logo">
-    <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
-  </div>
-  <div class="nav-btn">
-    <a href="#contato">Contato</a>
-  </div>
-</nav>
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-pill">
 
-<!-- ═══ NAVBAR MOBILE ═══ -->
-<div class="navbar-mobile" id="navbarMobile">
-  <div class="mob-bar">
-    <div class="mob-logo">
-      <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
+      <img
+        class="nav-logo"
+        src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+        alt="Kalli Vision"
+      />
+
+      <div class="nav-links">
+        <a href="#section-why">Por que nós</a>
+        <a href="#section-services">Serviços</a>
+        <a href="#section-for-who">Para quem</a>
+        <a href="#section-clients">Clientes</a>
+      </div>
+
+      <div class="nav-btn-wrap">
+        <a href="#footer" class="btn-nav">Contato</a>
+      </div>
+
     </div>
-    <div class="mob-center-links">
-      <a href="#inicio" onclick="closeMobDrawer()">Início</a>
-      <a href="#servicos" onclick="closeMobDrawer()">Serviços</a>
-    </div>
-    <div class="mob-right">
-      <a href="#contato" class="mob-contact-btn">Contato</a>
-      <div class="mob-more-btn" id="mobMoreBtn" onclick="toggleMobDrawer()">
-        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+
+    <!-- Imagem desktop (fundo) -->
+    <img
+      class="hero-bg"
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-14.png"
+      alt=""
+      aria-hidden="true"
+      fetchpriority="high"
+    />
+
+    <!-- Imagem mobile (story — portrait) -->
+    <img
+      class="hero-bg-mobile"
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-14.png"
+      alt=""
+      aria-hidden="true"
+      fetchpriority="high"
+    />
+
+    <div class="hero-overlay"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <div class="hero-text-block">
+
+        <!-- Título agrupado sem espaço entre as duas linhas de cor -->
+        <div class="hero-title-group fade-up">
+          <h1 class="hero-title-white">
+            Tráfego pago focado<br />em resultado.
+          </h1>
+          <h2 class="hero-title-blue">
+            +Leads, +vendas e<br />crescimento previsível
+          </h2>
+        </div>
+
+        <p class="hero-para fade-up d1">
+          Na Kalli Vision, tráfego não é anúncio solto. Coloque sua empresa na frente das pessoas certas, no momento certo.
+        </p>
+
+        <a href="#footer" class="btn-primary fade-up d2">
+          Quero atrair clientes agora
+        </a>
+
       </div>
     </div>
-  </div>
 
-  <div class="mob-drawer" id="mobDrawer">
-    <div class="mob-drawer-inner">
-      <div class="mob-drawer-logo">
-        <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
-      </div>
-      <a href="#inicio"        class="mob-nav-item" onclick="closeMobDrawer()">Início</a>
-      <a href="#servicos"      class="mob-nav-item" onclick="closeMobDrawer()">Serviços</a>
-      <a href="#comparacao"    class="mob-nav-item" onclick="closeMobDrawer()">Por que a Kalli?</a>
-      <a href="#como-funciona" class="mob-nav-item" onclick="closeMobDrawer()">Como funciona</a>
-      <div class="mob-drawer-sep"></div>
-      <a href="#contato" class="mob-drawer-cta" onclick="closeMobDrawer()">Falar com especialista</a>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 2 — POR QUE A MAIORIA NÃO TEM RESULTADO -->
+  <section id="section-why">
+
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">Por que a maioria das empresas</p>
+      <p class="section-title-white">não tem resultado com anúncios?</p>
     </div>
-  </div>
-</div>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="inicio">
+    <div class="why-grid">
 
-  <!-- desktop -->
-  <div class="hero-video-desktop">
-    <iframe
-      src="https://seamless-vid-loop.lovable.app/v/90d4101e-2b81-439e-bd40-eca96ceac1bc"
-      allow="autoplay; autoplay *"
-      loading="lazy"
-    ></iframe>
-  </div>
+      <div class="why-card why-card-bad fade-up d1">
+        <div class="why-icon-circle">✕</div>
+        <div class="why-card-label">Outras agências</div>
+        <ul class="why-list">
+          <li><span class="icon-x">✕</span> Não entendem as particularidades de cada negócio</li>
+          <li><span class="icon-x">✕</span> Anunciam sem funil de vendas</li>
+          <li><span class="icon-x">✕</span> Não acompanham as campanhas para aprimorá-las</li>
+          <li><span class="icon-x">✕</span> Geram altos gastos mas sem resultados expressivos</li>
+        </ul>
+      </div>
 
-  <!-- mobile — sem play button: muted + autoplay + playsinline -->
-  <div class="hero-video-mobile">
-    <div class="hero-video-mobile-wrap">
+      <div class="why-card why-card-good fade-up d2">
+        <img
+          class="kalli-logo-card"
+          src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+          alt="Kalli Vision"
+        />
+        <ul class="why-list" style="margin-top:18px;">
+          <li><span class="icon-ok">✓</span> Entendimento real do seu negócio</li>
+          <li><span class="icon-ok">✓</span> Objetivo claro, resultados</li>
+          <li><span class="icon-ok">✓</span> Público certo com um funil de vendas efetivo</li>
+          <li><span class="icon-ok">✓</span> Oferta ajustada</li>
+          <li><span class="icon-ok">✓</span> Otimização contínua</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 3 — SERVIÇOS -->
+  <section id="section-services">
+
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">O que a Kalli Vision</p>
+      <p class="section-title-blue" style="margin-top:4px;">faz por você?</p>
+    </div>
+
+    <div class="services-grid">
+
+      <div class="service-card fade-up d1">
+        <svg class="service-svg-icon" viewBox="0 0 42 42" fill="none">
+          <rect x="4"  y="22" width="8" height="14" rx="2" stroke="#4d9fff" stroke-width="1.5"/>
+          <rect x="17" y="14" width="8" height="22" rx="2" stroke="#4d9fff" stroke-width="1.5"/>
+          <rect x="30" y="6"  width="8" height="30" rx="2" stroke="#4d9fff" stroke-width="1.5"/>
+          <path d="M4 36h34" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="service-name">Gestão de<br />Tráfego Pago</div>
+        <p class="service-desc">Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong></p>
+        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+      </div>
+
+      <div class="service-card fade-up d2">
+        <svg class="service-svg-icon" viewBox="0 0 42 42" fill="none">
+          <path d="M6 8h30L26 22v12l-10-5V22L6 8z" stroke="#4d9fff" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <div class="service-name">Estrutura de<br />Funil de Vendas</div>
+        <p class="service-desc">Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.</p>
+        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+      </div>
+
+      <div class="service-card fade-up d3">
+        <svg class="service-svg-icon" viewBox="0 0 42 42" fill="none">
+          <circle cx="18" cy="18" r="12" stroke="#4d9fff" stroke-width="1.5"/>
+          <circle cx="18" cy="18" r="6"  stroke="#4d9fff" stroke-width="1.5"/>
+          <circle cx="18" cy="18" r="2"  fill="#4d9fff"/>
+          <path d="M28 28l8 8" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="service-name">Análise e<br />Otimização Contínua</div>
+        <p class="service-desc">Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.</p>
+        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+      </div>
+
+      <div class="service-card fade-up d4">
+        <svg class="service-svg-icon" viewBox="0 0 42 42" fill="none">
+          <rect x="4" y="6" width="34" height="24" rx="3" stroke="#4d9fff" stroke-width="1.5"/>
+          <path d="M16 30l-2 6h14l-2-6" stroke="#4d9fff" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M12 22l6-6 4 4 6-8" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="service-name">Estratégia<br />Personalizada</div>
+        <p class="service-desc">Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.</p>
+        <a href="#footer" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 4 — PARA QUEM -->
+  <section id="section-for-who">
+
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">Esse serviço é</p>
+      <p class="section-title-blue" style="margin-top:4px;">para o seu negócio</p>
+    </div>
+
+    <div class="for-who-grid">
+
+      <div class="for-card for-card-no fade-up d1">
+        <div class="for-icon-circle">✕</div>
+        <div class="for-card-label">Não é para você se..</div>
+        <ul class="why-list" style="width:100%;">
+          <li><span class="icon-x">✕</span> Busca um atalho que traga resultado do dia pra noite</li>
+          <li><span class="icon-x">✕</span> Não quer investir em tráfego</li>
+          <li><span class="icon-x">✕</span> Acredita que anúncio resolve tudo sozinho</li>
+        </ul>
+      </div>
+
+      <div class="for-card for-card-yes fade-up d2">
+        <div class="for-icon-circle">✓</div>
+        <div class="for-card-label">É para você se..</div>
+        <ul class="why-list" style="width:100%;">
+          <li><span class="icon-ok">✓</span> Quer gerar leads qualificados</li>
+          <li><span class="icon-ok">✓</span> Quer vender mais usando anúncios online</li>
+          <li><span class="icon-ok">✓</span> Já tem um serviço ou produto validado</li>
+          <li><span class="icon-ok">✓</span> Busca crescimento previsível</li>
+          <li><span class="icon-ok">✓</span> Quer parar de desperdiçar dinheiro com anúncios mal feitos</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 5 — CLIENTES -->
+  <section id="section-clients">
+
+    <div class="clients-title-wrap fade-up">
+      <span class="clients-heading clients-heading-white">CLIENTES DA </span>
+      <span class="clients-heading clients-heading-blue">KALLI VISION</span>
+    </div>
+
+    <div class="carousel-outer">
+      <div class="carousel-track">
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/3.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/2.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/8.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/7.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/6.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/3.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/2.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/8.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/7.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/6.png" alt="Cliente" /></div>
+        <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision" /></div>
+      </div>
+    </div>
+
+    <!-- Vídeo desktop — autoplay imediato -->
+    <div class="video-wrap">
       <iframe
-        src="https://seamless-vid-loop.lovable.app/v/ce0771c3-1452-4c48-934f-822eadc50714?autoplay=1&muted=1&loop=1&controls=0&playsinline=1"
-        allow="autoplay; autoplay *; fullscreen; picture-in-picture"
-        allowfullscreen
-        loading="lazy"
-        muted
-        playsinline
-        autoplay
+        src="https://seamless-vid-loop.lovable.app/v/16da0680-6fb0-4add-91f4-1c877a379996?autoplay=1&muted=1&loop=1"
+        allow="autoplay; muted"
+        loading="eager"
       ></iframe>
     </div>
-  </div>
 
-  <div class="hero-overlay"></div>
+  </section>
 
-  <div class="hero-content">
-    <h1>
-      Tráfego pago focado<br>
-      em resultado.<br>
-      <span class="blue">+Leads, +vendas e<br>crescimento previsível</span>
-    </h1>
-    <p>
-      Na Kalli Vision, tráfego não é anúncio solto.<br>
-      Colocamos sua empresa na frente das pessoas<br>
-      certas, no momento certo.
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 6 — RESULTADOS GOOGLE ADS -->
+  <section id="section-results-google">
+
+    <div class="results-title-wrap fade-up">
+      <div class="results-label">Google Ads</div>
+      <h2 class="results-heading">RESULTADOS <span>GOOGLE ADS</span></h2>
+    </div>
+
+    <div class="results-carousel-wrap fade-up d1">
+      <div class="results-track" id="google-track">
+
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143904.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143915.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143931.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143937.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-144004.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-144108.png" alt="Resultado Google Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-09-04-090238.png" alt="Resultado Google Ads" loading="lazy" /></div>
+
+      </div>
+
+      <button class="results-btn results-btn-prev" data-target="google" aria-label="Anterior">&#8592;</button>
+      <button class="results-btn results-btn-next" data-target="google" aria-label="Próximo">&#8594;</button>
+    </div>
+
+    <div class="results-dots" id="google-dots"></div>
+
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 7 — RESULTADOS META ADS -->
+  <section id="section-results-meta">
+
+    <div class="results-title-wrap fade-up">
+      <div class="results-label">Meta Ads</div>
+      <h2 class="results-heading">RESULTADOS <span>META ADS</span></h2>
+    </div>
+
+    <div class="results-carousel-wrap fade-up d1">
+      <div class="results-track" id="meta-track">
+
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143523.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-07-11-181736.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143601.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-29-231857.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-29-232003.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-29-232200.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-29-232611.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-29-234725.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143246.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143552.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143801.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-30-123400.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-08-30-123532.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+        <div class="results-slide"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/captura-de-tela-2025-12-13-143333.png" alt="Resultado Meta Ads" loading="lazy" /></div>
+
+      </div>
+
+      <button class="results-btn results-btn-prev" data-target="meta" aria-label="Anterior">&#8592;</button>
+      <button class="results-btn results-btn-next" data-target="meta" aria-label="Próximo">&#8594;</button>
+    </div>
+
+    <div class="results-dots" id="meta-dots"></div>
+
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 8 — COMENTÁRIOS DOS CLIENTES -->
+  <section id="section-reviews">
+
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">O que nossos clientes</p>
+      <p class="section-title-white">dizem sobre a Kalli Vision</p>
+    </div>
+
+    <div class="reviews-grid">
+
+      <div class="review-card fade-up d1">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">Depois de meses desperdiçando dinheiro com anúncios que não convertiam, a Kalli Vision chegou e transformou completamente nossos resultados. Em menos de 60 dias já sentimos a diferença no número de leads qualificados.</p>
+        <div class="review-author">
+          <div class="review-avatar">M</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Marcos Oliveira</div>
+            <div class="review-author-role">CEO — Construtora Oliveira</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-up d2">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">O diferencial da Kalli Vision é que eles realmente entendem o seu negócio antes de anunciar. Não é anúncio genérico. É estratégia. Triplicamos nosso volume de agendamentos em 3 meses.</p>
+        <div class="review-author">
+          <div class="review-avatar">A</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Ana Beatriz Santos</div>
+            <div class="review-author-role">Diretora — Clínica Estética Renova</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-up d3">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">Profissionalismo e transparência em cada etapa. Acompanho os relatórios toda semana e consigo ver claramente onde cada real investido está gerando retorno. Recomendo sem hesitar.</p>
+        <div class="review-author">
+          <div class="review-avatar">R</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Ricardo Ferreira</div>
+            <div class="review-author-role">Sócio — Ferreira & Cia Advocacia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-up d1">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">Eu tinha medo de investir em tráfego pago porque nunca tinha tido resultado. Com a Kalli Vision foi diferente desde o início. Eles montaram o funil, ajustaram a oferta e os clientes começaram a chegar.</p>
+        <div class="review-author">
+          <div class="review-avatar">J</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Juliana Moraes</div>
+            <div class="review-author-role">Fundadora — Studio JM Pilates</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-up d2">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">O crescimento foi consistente e previsível, exatamente o que a gente precisava. A equipe otimiza as campanhas sem a gente precisar cobrar. Parceria de verdade.</p>
+        <div class="review-author">
+          <div class="review-avatar">C</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Carlos Eduardo Lima</div>
+            <div class="review-author-role">Gerente Comercial — GrupoTech</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-up d3">
+        <div class="review-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="review-text">Resultado real, sem enrolação. A Kalli Vision entrega o que promete e ainda vai além. Minha empresa cresceu de forma consistente desde que começamos a parceria. São os melhores que já contratei.</p>
+        <div class="review-author">
+          <div class="review-avatar">F</div>
+          <div class="review-author-info">
+            <div class="review-author-name">Fernanda Costa</div>
+            <div class="review-author-role">Proprietária — Espaço Bem Estar</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEÇÃO 9 — DEPOIMENTOS EM VÍDEO -->
+  <section id="section-testimonials">
+
+    <div class="fade-up" style="text-align:center;">
+      <p class="section-title-blue">Depoimentos em vídeo</p>
+      <p class="section-title-white">de quem já transformou seu negócio</p>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-video-card fade-up d1">
+        <div class="testimonial-video-wrap">
+          <!-- Substitua SEU_VIDEO_ID_1 pelo ID do vídeo do YouTube -->
+          <iframe
+            src="https://www.youtube.com/embed/SEU_VIDEO_ID_1?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="testimonial-video-label">Depoimento — Cliente 1</div>
+      </div>
+
+      <div class="testimonial-video-card fade-up d2">
+        <div class="testimonial-video-wrap">
+          <!-- Substitua SEU_VIDEO_ID_2 pelo ID do vídeo do YouTube -->
+          <iframe
+            src="https://www.youtube.com/embed/SEU_VIDEO_ID_2?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="testimonial-video-label">Depoimento — Cliente 2</div>
+      </div>
+
+      <div class="testimonial-video-card fade-up d3">
+        <div class="testimonial-video-wrap">
+          <!-- Substitua SEU_VIDEO_ID_3 pelo ID do vídeo do YouTube -->
+          <iframe
+            src="https://www.youtube.com/embed/SEU_VIDEO_ID_3?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <div class="testimonial-video-label">Depoimento — Cliente 3</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <img
+      class="footer-logo"
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png"
+      alt="Kalli Vision"
+    />
+    <p class="footer-tagline">
+      Tráfego pago focado em resultado.<br />
+      Coloque sua empresa na frente das pessoas certas, no momento certo.
     </p>
-    <a href="#contato" class="cta-btn">Quero atrair clientes agora</a>
-  </div>
-</section>
+    <a href="https://wa.me/55" class="btn-primary" target="_blank" rel="noopener">
+      Quero atrair clientes agora
+    </a>
+    <p class="footer-copy">© 2026 Kalli Vision. Todos os direitos reservados.</p>
+  </footer>
 
-<!-- ═══ COMPARAÇÃO ═══ -->
-<section class="comparison-section" id="comparacao">
-  <h2 class="comparison-title">
-    <span class="t-blue">Por que a maioria das empresas</span>
-    <span class="t-white">não tem resultado com anúncios?</span>
-  </h2>
-  <div class="comparison-grid">
-    <div class="comp-card" data-mob-anim>
-      <div class="card-icon-circle">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </div>
-      <span class="card-heading">Outras agências</span>
-      <ul class="card-list">
-        <li class="card-item"><span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="card-item-text">Não entendem as particularidades de cada negócio</span></li>
-        <li class="card-item"><span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="card-item-text">Anunciam sem funil de vendas</span></li>
-        <li class="card-item"><span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="card-item-text">Não acompanham as campanhas para aprimorá-las</span></li>
-        <li class="card-item"><span class="icon-x"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="card-item-text">Geram altos gastos mas sem resultados expressivos</span></li>
-      </ul>
-    </div>
-    <div class="comp-card" data-mob-anim>
-      <div class="card-logo-pill">
-        <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
-      </div>
-      <ul class="card-list">
-        <li class="card-item"><span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="card-item-text">Entendimento real do seu negócio</span></li>
-        <li class="card-item"><span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="card-item-text">Objetivo claro, resultados</span></li>
-        <li class="card-item"><span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="card-item-text">Público certo com um funil de vendas efetivo</span></li>
-        <li class="card-item"><span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="card-item-text">Oferta ajustada</span></li>
-        <li class="card-item"><span class="icon-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="card-item-text">Otimização contínua</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
+  <!-- JAVASCRIPT -->
+  <script>
+    /* ----------------------------------------------------------------
+       1. NAVBAR — expande ao rolar 80px
+    ---------------------------------------------------------------- */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('expanded', window.scrollY > 80);
+    }, { passive: true });
 
-<!-- ═══ SERVIÇOS ═══ -->
-<section class="section-services" id="servicos">
-  <div class="services-header">
-    <h2>O que a Kalli Vision<br>faz por você?</h2>
-  </div>
-  <div class="services-grid">
-    <div class="svc-card" data-mob-anim>
-      <div class="svc-icon"><svg viewBox="0 0 48 48"><rect x="4" y="28" width="8" height="14" rx="1.5"/><rect x="16" y="20" width="8" height="22" rx="1.5"/><rect x="28" y="12" width="8" height="30" rx="1.5"/><rect x="40" y="6" width="8" height="36" rx="1.5"/><polyline points="4,26 16,18 28,10 48,4"/><circle cx="4" cy="26" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/><circle cx="16" cy="18" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/><circle cx="28" cy="10" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/></svg></div>
-      <h3>Gestão de<br>Tráfego Pago</h3>
-      <p>Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong></p>
-      <a href="#contato" class="svc-btn"><span>SAIBA MAIS</span><span class="svc-btn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
-    </div>
-    <div class="svc-card" data-mob-anim>
-      <div class="svc-icon"><svg viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="36" rx="4"/><line x1="6" y1="18" x2="42" y2="18"/><line x1="24" y1="18" x2="24" y2="42"/><line x1="6" y1="30" x2="24" y2="30"/><circle cx="15" cy="12" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/><circle cx="24" cy="12" r="2" fill="rgba(180,210,255,0.8)" stroke="none"/></svg></div>
-      <h3>Estrutura de<br>Funil de Vendas</h3>
-      <p>Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.</p>
-      <a href="#contato" class="svc-btn"><span>SAIBA MAIS</span><span class="svc-btn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
-    </div>
-    <div class="svc-card" data-mob-anim>
-      <div class="svc-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><polyline points="24,12 24,24 32,30"/><line x1="6" y1="24" x2="2" y2="24"/><line x1="46" y1="24" x2="42" y2="24"/><line x1="24" y1="6" x2="24" y2="2"/><line x1="24" y1="46" x2="24" y2="42"/></svg></div>
-      <h3>Análise e<br>Otimização Contínua</h3>
-      <p>Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.</p>
-      <a href="#contato" class="svc-btn"><span>SAIBA MAIS</span><span class="svc-btn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
-    </div>
-    <div class="svc-card" data-mob-anim>
-      <div class="svc-icon"><svg viewBox="0 0 48 48"><path d="M24 4 L44 14 L44 34 L24 44 L4 34 L4 14 Z"/><path d="M24 14 L34 19 L34 29 L24 34 L14 29 L14 19 Z"/><circle cx="24" cy="24" r="4" fill="rgba(180,210,255,0.8)" stroke="none"/></svg></div>
-      <h3>Estratégia<br>Personalizada</h3>
-      <p>Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.</p>
-      <a href="#contato" class="svc-btn"><span>SAIBA MAIS</span><span class="svc-btn-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
-    </div>
-  </div>
-</section>
+    /* ----------------------------------------------------------------
+       2. ANIMAÇÕES DE ENTRADA — IntersectionObserver
+    ---------------------------------------------------------------- */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -55px 0px', threshold: 0.10 });
 
-<!-- ═══ RESULTADOS ═══ -->
-<section class="section-results">
-  <p class="section-tag">Resultados comprovados</p>
-  <h2 class="section-title">Números que <span>falam por si</span></h2>
-  <div class="results-grid">
-    <div class="result-item" data-mob-anim><div class="result-number">+350%</div><div class="result-label">Aumento médio de leads qualificados</div></div>
-    <div class="result-item" data-mob-anim><div class="result-number">-42%</div><div class="result-label">Redução no custo por aquisição</div></div>
-    <div class="result-item" data-mob-anim><div class="result-number">8×</div><div class="result-label">ROAS médio dos clientes ativos</div></div>
-    <div class="result-item" data-mob-anim><div class="result-number">+120</div><div class="result-label">Negócios acelerados com tráfego</div></div>
-  </div>
-</section>
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-<!-- ═══ COMO FUNCIONA ═══ -->
-<section class="section-process" id="como-funciona">
-  <p class="section-tag">Processo</p>
-  <h2 class="section-title">Como a Kalli Vision<br><span>trabalha por você</span></h2>
-  <p class="section-subtitle">Um processo estruturado, sem achismos, do diagnóstico ao crescimento contínuo.</p>
-  <div class="process-steps">
-    <div class="step" data-mob-anim><div class="step-number">1</div><h4>Diagnóstico</h4><p>Analisamos seu negócio, mercado e o que já foi tentado antes.</p></div>
-    <div class="step" data-mob-anim><div class="step-number">2</div><h4>Estratégia</h4><p>Montamos um plano personalizado com metas e canais definidos.</p></div>
-    <div class="step" data-mob-anim><div class="step-number">3</div><h4>Ativação</h4><p>Campanhas no ar com segmentação, criativos e rastreamento completo.</p></div>
-    <div class="step" data-mob-anim><div class="step-number">4</div><h4>Escala</h4><p>Otimizamos e escalamos o que funciona, cortamos o que não converte.</p></div>
-  </div>
-</section>
-
-<!-- ═══ CONTATO ═══ -->
-<section class="section-contact" id="contato">
-  <div class="contact-card">
-    <h2>Pronto para ter<br><span style="background:linear-gradient(100deg,#60a5fa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">vendas previsíveis?</span></h2>
-    <p>Fale com um especialista da Kalli Vision e descubra quanto tráfego qualificado sua empresa pode estar perdendo agora.</p>
-    <a href="https://wa.me/5500000000000" class="btn-cta-large" target="_blank" rel="noopener">Falar com especialista</a>
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision"/>
-  <p>© 2026 Kalli Vision. Todos os direitos reservados.</p>
-</footer>
-
-<script>
-  /* ── desktop navbar scroll ── */
-  const navbar = document.getElementById('navbar');
-  function onScroll() { navbar.classList.toggle('scrolled', window.scrollY >= 60); }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  /* ── mobile drawer ── */
-  const mobDrawer  = document.getElementById('mobDrawer');
-  const mobMoreBtn = document.getElementById('mobMoreBtn');
-
-  function toggleMobDrawer() {
-    const open = mobDrawer.classList.toggle('open');
-    mobMoreBtn.classList.toggle('open', open);
-  }
-  function closeMobDrawer() {
-    mobDrawer.classList.remove('open');
-    mobMoreBtn.classList.remove('open');
-  }
-
-  /* ── mobile scroll animations (IntersectionObserver) ── */
-  function isMobile() { return window.innerWidth <= 768; }
-
-  const animEls = document.querySelectorAll('[data-mob-anim]');
-
-  const observer = new IntersectionObserver((entries) => {
-    if (!isMobile()) return;
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('mob-active');
-      } else {
-        /* remove ao sair para re-animar ao voltar */
-        entry.target.classList.remove('mob-active');
-      }
+    /* ----------------------------------------------------------------
+       3. HERO — ativa animações imediatamente
+    ---------------------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelectorAll('#hero .fade-up')
+          .forEach(el => el.classList.add('in'));
+      }, 90);
     });
-  }, {
-    threshold: 0.18   /* dispara quando 18% do elemento está visível */
-  });
 
-  animEls.forEach(el => observer.observe(el));
-
-  /* re-checar ao redimensionar */
-  window.addEventListener('resize', () => {
-    if (!isMobile()) {
-      animEls.forEach(el => el.classList.remove('mob-active'));
+    /* ----------------------------------------------------------------
+       4. PARALLAX SUAVE no glow do hero
+    ---------------------------------------------------------------- */
+    const glow = document.querySelector('.hero-glow');
+    if (glow) {
+      window.addEventListener('mousemove', e => {
+        const rx = (e.clientX / window.innerWidth  - 0.5) * 30;
+        const ry = (e.clientY / window.innerHeight - 0.5) * 30;
+        glow.style.transform = `translate(${rx}px, ${ry}px)`;
+      }, { passive: true });
     }
-  });
-</script>
+
+    /* ----------------------------------------------------------------
+       5. CARROSSÉIS DE RESULTADOS
+    ---------------------------------------------------------------- */
+    function initCarousel(trackId, dotsId, intervalMs) {
+      const track  = document.getElementById(trackId);
+      const dotsEl = document.getElementById(dotsId);
+
+      if (!track || !dotsEl) return;
+
+      const slides = Array.from(track.querySelectorAll('.results-slide'));
+      const total  = slides.length;
+      let current  = 0;
+      let timer    = null;
+
+      /* Cria dots */
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'results-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(dot);
+      });
+
+      function updateDots() {
+        dotsEl.querySelectorAll('.results-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      function goTo(index) {
+        current = (index + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        updateDots();
+      }
+
+      function next() { goTo(current + 1); }
+      function prev() { goTo(current - 1); }
+
+      /* Botões seta */
+      const wrap = track.closest('.results-carousel-wrap');
+      wrap.querySelector('.results-btn-prev').addEventListener('click', () => {
+        prev();
+        resetTimer();
+      });
+      wrap.querySelector('.results-btn-next').addEventListener('click', () => {
+        next();
+        resetTimer();
+      });
+
+      /* Autoplay */
+      function startTimer() {
+        timer = setInterval(next, intervalMs);
+      }
+      function resetTimer() {
+        clearInterval(timer);
+        startTimer();
+      }
+
+      /* Pausa ao hover */
+      wrap.addEventListener('mouseenter', () => clearInterval(timer));
+      wrap.addEventListener('mouseleave', startTimer);
+
+      /* Swipe touch */
+      let touchStartX = 0;
+      wrap.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      wrap.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+          diff > 0 ? next() : prev();
+          resetTimer();
+        }
+      }, { passive: true });
+
+      startTimer();
+    }
+
+    /* Inicializa os dois carrosséis com intervalos diferentes */
+    initCarousel('google-track', 'google-dots', 4000);
+    initCarousel('meta-track',   'meta-dots',   4500);
+  </script>
 
 </body>
 </html>
