@@ -149,6 +149,11 @@
       box-shadow: 0 6px 20px rgba(26,111,255,0.5);
     }
 
+    /* Botão X nunca aparece no desktop */
+    .nav-close-btn {
+      display: none;
+    }
+
     /* ================================================================
        HERO — DESKTOP
     ================================================================ */
@@ -229,7 +234,6 @@
       gap: 22px;
     }
 
-    /* Agrupa h1 + h2 sem gap entre eles */
     .hero-title-group {
       display: flex;
       flex-direction: column;
@@ -286,152 +290,6 @@
       background: #3d7fff;
       transform: translateY(-2px);
       box-shadow: 0 10px 36px rgba(26,111,255,0.55);
-    }
-
-    /* ================================================================
-       HERO — MOBILE (layout story)
-    ================================================================ */
-    @media (max-width: 860px) {
-      #hero {
-        min-height: auto;
-        flex-direction: column;
-        align-items: stretch;
-        padding-top: 0;
-      }
-
-      /* Oculta elementos de background do desktop */
-      .hero-bg,
-      .hero-overlay,
-      .hero-glow {
-        display: none;
-      }
-
-      /* Imagem mobile em formato story (4:5) */
-      .hero-bg-mobile {
-        display: block;
-        width: 100%;
-        aspect-ratio: 4 / 5; /* Alterado para 4:5 */
-        object-fit: cover;
-        object-position: center top;
-        position: relative;
-        z-index: 0;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        padding: 40px 28px 60px;
-        background: var(--bg);
-      }
-
-      .hero-text-block {
-        max-width: 100%;
-        gap: 20px;
-      }
-
-      .hero-para {
-        max-width: 100%;
-      }
-
-      .btn-primary {
-        width: 100%;
-        padding: 18px 24px;
-      }
-
-      /* NAVBAR MOBILE - EXPANSÃO POR CLIQUE */
-      #navbar .nav-pill {
-        width: 170px; /* Largura inicial */
-        padding: 10px 20px;
-        justify-content: center; /* Centraliza a logo */
-        flex-direction: row;
-        align-items: center;
-        position: relative;
-        height: auto; /* Altura ajustável */
-        border-radius: 999px; /* Mantém arredondado quando fechado */
-      }
-
-      #navbar.expanded .nav-pill {
-        width: min(860px, 94vw); /* Largura expandida */
-        padding: 10px 28px;
-        justify-content: flex-start; /* Alinha logo à esquerda */
-        flex-direction: column; /* Links para baixo */
-        align-items: flex-start;
-        height: auto;
-        border-radius: 20px; /* Menos arredondado quando expandido */
-      }
-
-      #navbar .nav-links {
-        position: absolute; /* Esconde os links */
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(5, 15, 35, 0.9); /* Fundo para os links */
-        border-radius: 0 0 20px 20px; /* Menos arredondado */
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 28px 20px;
-        gap: 15px;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-      }
-
-      #navbar.expanded .nav-links {
-        position: static; /* Mostra os links */
-        opacity: 1;
-        pointer-events: all;
-        transform: translateY(0);
-        margin-top: 15px; /* Espaço entre logo e links */
-        border-radius: 0; /* Remove border-radius extra */
-        background: transparent; /* Remove background extra */
-        padding: 0; /* Remove padding extra */
-      }
-
-      #navbar .nav-btn-wrap {
-        display: none; /* Oculta o botão na versão compacta mobile */
-      }
-
-      #navbar.expanded .nav-btn-wrap {
-        display: block; /* Mostra o botão na versão expandida mobile */
-        opacity: 1;
-        pointer-events: all;
-        transform: translateX(0);
-        margin-top: 15px;
-        width: 100%;
-        text-align: center;
-      }
-
-      #navbar.expanded .nav-btn-wrap .btn-nav {
-        width: 100%;
-      }
-
-      /* Botão de fechar Navbar */
-      .nav-close-btn {
-        display: none; /* Oculto por padrão */
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        background: none;
-        border: none;
-        color: var(--white);
-        font-size: 24px;
-        cursor: pointer;
-        line-height: 1;
-        padding: 5px;
-        z-index: 10000;
-      }
-      #navbar.expanded .nav-close-btn {
-        display: block; /* Visível quando expandido */
-      }
-    }
-
-    @media (max-width: 560px) {
-      .hero-title-white,
-      .hero-title-blue {
-        font-size: clamp(28px, 8.5vw, 38px);
-      }
-      .hero-para { font-size: 15px; }
     }
 
     /* ================================================================
@@ -824,7 +682,6 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* Logos mais juntas e maiores */
     .logo-slot {
       padding: 0 36px;
       display: flex;
@@ -843,7 +700,6 @@
     }
     .logo-slot img:hover { opacity: 1; }
 
-    /* Vídeo — somente desktop, autoplay imediato */
     .video-wrap {
       margin-top: 70px;
       position: relative;
@@ -901,7 +757,6 @@
       background-clip: text;
     }
 
-    /* Wrapper do carrossel de resultados */
     .results-carousel-wrap {
       position: relative;
       max-width: 1100px;
@@ -931,7 +786,6 @@
       display: block;
     }
 
-    /* Setas de navegação */
     .results-btn {
       position: absolute;
       top: 50%;
@@ -959,7 +813,6 @@
     .results-btn-prev { left: 16px; }
     .results-btn-next { right: 16px; }
 
-    /* Indicadores (dots modernos) */
     .results-dots {
       display: flex;
       align-items: center;
@@ -1068,8 +921,6 @@
       color: #fff;
       flex-shrink: 0;
     }
-
-    .review-author-info {}
 
     .review-author-name {
       font-size: 14px;
@@ -1250,12 +1101,12 @@
 
     .about-image-wrap {
       flex-shrink: 0;
-      width: 300px; /* Tamanho da imagem */
+      width: 300px;
       height: 300px;
       overflow: hidden;
-      border-radius: 12px; /* Borda quadrada */
-      border: 3px solid var(--blue);
-      box-shadow: 0 0 0 8px rgba(26,111,255,0.2);
+      border-radius: 12px;
+      border: none;
+      box-shadow: none;
     }
 
     .about-image-wrap img {
@@ -1266,7 +1117,6 @@
       display: block;
     }
 
-    /* Imagens específicas para desktop/mobile */
     .about-image-desktop { display: block; }
     .about-image-mobile { display: none; }
 
@@ -1277,6 +1127,7 @@
       background: var(--bg);
       padding: 100px 60px;
       text-align: center;
+      position: relative;
     }
 
     .cta-title {
@@ -1378,6 +1229,41 @@
       background: #3d7fff;
       transform: translateY(-2px);
       box-shadow: 0 10px 36px rgba(26,111,255,0.55);
+    }
+
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background-color: var(--green);
+      color: var(--white);
+      padding: 25px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease-out;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .success-message.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .success-message svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--white);
     }
 
     /* ================================================================
@@ -1528,7 +1414,6 @@
       box-shadow: 0 6px 16px rgba(0,0,0,0.4);
     }
 
-    /* Ícone do WhatsApp (usando um SVG simples ou font-awesome) */
     .whatsapp-float svg {
       width: 30px;
       height: 30px;
@@ -1559,13 +1444,65 @@
       .reviews-grid  { grid-template-columns: 1fr 1fr; }
       .testimonials-grid { grid-template-columns: 1fr 1fr; }
       .process-grid { grid-template-columns: 1fr 1fr; }
-      .about-content { flex-direction: column; text-align: center; gap: 40px; }
+
+      /* Aqui garantimos imagem do Felipe em cima e texto embaixo */
+      #section-about .about-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+      }
+
       .about-image-wrap { margin: 0 auto; }
+
       .footer-content-wrapper { grid-template-columns: 1fr 1fr; }
       .footer-col.about { grid-column: span 2; text-align: center; }
     }
 
     @media (max-width: 860px) {
+      #hero {
+        min-height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 0;
+      }
+
+      .hero-bg,
+      .hero-overlay,
+      .hero-glow {
+        display: none;
+      }
+
+      .hero-bg-mobile {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: center top;
+        position: relative;
+        z-index: 0;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 40px 28px 60px;
+        background: var(--bg);
+      }
+
+      .hero-text-block {
+        max-width: 100%;
+        gap: 20px;
+      }
+
+      .hero-para {
+        max-width: 100%;
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 18px 24px;
+      }
+
       .why-grid, .for-who-grid { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr; }
       #section-why, #section-services, #section-for-who,
@@ -1580,32 +1517,118 @@
       .testimonials-grid { grid-template-columns: 1fr; }
       .process-grid { grid-template-columns: 1fr; }
 
-      /* Ajustes para logos do carrossel em mobile */
-      .logo-slot {
-        padding: 0 15px; /* Diminui a distância */
-      }
+      .logo-slot { padding: 0 15px; }
       .logo-slot img {
-        height: 70px; /* Aumenta o tamanho */
+        height: 70px;
         max-width: 180px;
       }
-      .carousel-track {
-        align-items: center; /* Garante que estejam no meio verticalmente */
-      }
+      .carousel-track { align-items: center; }
 
-      /* Ordem da imagem e texto na seção "Sobre" para mobile */
-      #section-about .about-content {
-        flex-direction: column-reverse; /* Inverte a ordem: imagem antes do texto */
-      }
       .about-image-desktop { display: none; }
       .about-image-mobile { display: block; }
+
+      #section-clients + .divider { display: none; }
 
       .footer-content-wrapper { grid-template-columns: 1fr; text-align: center; }
       .footer-col.about { grid-column: span 1; }
       .footer-col { align-items: center; }
       .footer-social-icons { justify-content: center; }
+
+      /* NAVBAR MOBILE - EXPANSÃO POR CLIQUE */
+      #navbar .nav-pill {
+        width: 170px;
+        padding: 10px 20px;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        height: auto;
+        border-radius: 999px;
+      }
+
+      #navbar.expanded .nav-pill {
+        width: min(860px, 94vw);
+        padding: 10px 28px;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        border-radius: 20px;
+      }
+
+      #navbar .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(5, 15, 35, 0.9);
+        border-radius: 0 0 20px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 28px 20px;
+        gap: 15px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      #navbar.expanded .nav-links {
+        position: static;
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+        margin-top: 15px;
+        border-radius: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      #navbar .nav-btn-wrap {
+        display: none;
+      }
+
+      #navbar.expanded .nav-btn-wrap {
+        display: block;
+        opacity: 1;
+        pointer-events: all;
+        transform: translateX(0);
+        margin-top: 15px;
+        width: 100%;
+        text-align: center;
+      }
+
+      #navbar.expanded .nav-btn-wrap .btn-nav {
+        width: 100%;
+      }
+
+      /* X só aparece no mobile quando o menu está expandido */
+      .nav-close-btn {
+        display: none;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 24px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 5px;
+        z-index: 10000;
+      }
+      #navbar.expanded .nav-close-btn {
+        display: block;
+      }
     }
 
     @media (max-width: 560px) {
+      .hero-title-white,
+      .hero-title-blue {
+        font-size: clamp(28px, 8.5vw, 38px);
+      }
+      .hero-para { font-size: 15px; }
+
       .why-card, .for-card, .process-card { padding: 34px 22px; }
       .service-card { padding: 30px 20px 26px; }
       .review-card { padding: 28px 22px; }
@@ -1626,6 +1649,7 @@
         alt="Kalli Vision"
       />
 
+      <!-- Botão de fechar (só aparece no mobile quando expandido) -->
       <button class="nav-close-btn" aria-label="Fechar menu de navegação">✕</button>
 
       <div class="nav-links">
@@ -1647,7 +1671,6 @@
   <!-- HERO -->
   <section id="hero">
 
-    <!-- Imagem desktop (fundo) -->
     <img
       class="hero-bg"
       src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-14.png"
@@ -1656,10 +1679,9 @@
       fetchpriority="high"
     />
 
-    <!-- Imagem mobile (story — portrait) -->
     <img
       class="hero-bg-mobile"
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45.png"
+      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45-2.png"
       alt=""
       aria-hidden="true"
       fetchpriority="high"
@@ -1671,7 +1693,6 @@
     <div class="hero-content">
       <div class="hero-text-block">
 
-        <!-- Título agrupado sem espaço entre as duas linhas de cor -->
         <div class="hero-title-group fade-up">
           <h1 class="hero-title-white">
             Tráfego pago focado<br />em resultado.
@@ -1755,7 +1776,10 @@
           <path d="M4 36h34" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
         <div class="service-name">Gestão de<br />Tráfego Pago</div>
-        <p class="service-desc">Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em <strong>gerar contatos, vendas e oportunidades reais.</strong></p>
+        <p class="service-desc">
+          Criação, gestão e otimização de campanhas no Google Ads e Meta Ads com foco em
+          <strong>gerar contatos, vendas e oportunidades reais.</strong>
+        </p>
         <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
@@ -1764,7 +1788,9 @@
           <path d="M6 8h30L26 22v12l-10-5V22L6 8z" stroke="#4d9fff" stroke-width="1.5" stroke-linejoin="round"/>
         </svg>
         <div class="service-name">Estrutura de<br />Funil de Vendas</div>
-        <p class="service-desc">Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.</p>
+        <p class="service-desc">
+          Organizamos o caminho do cliente desde o primeiro clique até o contato ou fechamento.
+        </p>
         <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
@@ -1776,7 +1802,9 @@
           <path d="M28 28l8 8" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
         <div class="service-name">Análise e<br />Otimização Contínua</div>
-        <p class="service-desc">Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.</p>
+        <p class="service-desc">
+          Nada roda no automático. Na Kalli, analisamos os dados, ajustamos campanhas e melhoramos constantemente.
+        </p>
         <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
@@ -1787,7 +1815,9 @@
           <path d="M12 22l6-6 4 4 6-8" stroke="#4d9fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <div class="service-name">Estratégia<br />Personalizada</div>
-        <p class="service-desc">Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.</p>
+        <p class="service-desc">
+          Cada negócio é único. Nada de campanhas genéricas ou fórmulas prontas.
+        </p>
         <a href="#section-cta" class="btn-saiba">SAIBA MAIS <span class="btn-saiba-arrow">→</span></a>
       </div>
 
@@ -1796,7 +1826,7 @@
 
   <div class="divider"></div>
 
-  <!-- NOVA SEÇÃO: COMO FUNCIONA O PROCESSO -->
+  <!-- SEÇÃO PROCESSO -->
   <section id="section-process">
     <div class="fade-up" style="text-align:center;">
       <p class="section-title-blue">Como funciona o</p>
@@ -1807,32 +1837,40 @@
       <div class="process-card fade-up d1">
         <div class="process-icon-circle">1</div>
         <div class="process-card-title">Diagnóstico do negócio</div>
-        <p class="process-card-text">Entendimento do seu serviço, público, metas e cenário atual.</p>
+        <p class="process-card-text">
+          Entendimento do seu serviço, público, metas e cenário atual.
+        </p>
       </div>
 
       <div class="process-card fade-up d2">
         <div class="process-icon-circle">2</div>
         <div class="process-card-title">Planejamento estratégico</div>
-        <p class="process-card-text">Definição de canais, campanhas, funil e orçamento ideal.</p>
+        <p class="process-card-text">
+          Definição de canais, campanhas, funil e orçamento ideal.
+        </p>
       </div>
 
       <div class="process-card fade-up d3">
         <div class="process-icon-circle">3</div>
         <div class="process-card-title">Criação e estruturação</div>
-        <p class="process-card-text">Criação dos anúncios, públicos e estrutura de campanha.</p>
+        <p class="process-card-text">
+          Criação dos anúncios, públicos e estrutura de campanha.
+        </p>
       </div>
 
       <div class="process-card fade-up d4">
         <div class="process-icon-circle">4</div>
         <div class="process-card-title">Acompanhamento e otimização</div>
-        <p class="process-card-text">Análise constante para melhorar performance e reduzir custos.</p>
+        <p class="process-card-text">
+          Análise constante para melhorar performance e reduzir custos.
+        </p>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 4 — PARA QUEM -->
+  <!-- SEÇÃO PARA QUEM -->
   <section id="section-for-who">
 
     <div class="fade-up" style="text-align:center;">
@@ -1869,7 +1907,7 @@
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 5 — CLIENTES -->
+  <!-- SEÇÃO CLIENTES -->
   <section id="section-clients">
 
     <div class="clients-title-wrap fade-up">
@@ -1885,6 +1923,8 @@
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/7.png" alt="Cliente" /></div>
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/6.png" alt="Cliente" /></div>
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-1.png" alt="Kalli Vision" /></div>
+
+        <!-- Duplicados para efeito de loop infinito -->
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/3.png" alt="Cliente" /></div>
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/2.png" alt="Cliente" /></div>
         <div class="logo-slot"><img src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/8.png" alt="Cliente" /></div>
@@ -1894,7 +1934,6 @@
       </div>
     </div>
 
-    <!-- Vídeo desktop — autoplay imediato -->
     <div class="video-wrap">
       <iframe
         src="https://seamless-vid-loop.lovable.app/v/16da0680-6fb0-4add-91f4-1c877a379996?autoplay=1&muted=1&loop=1"
@@ -1907,7 +1946,7 @@
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 6 — RESULTADOS GOOGLE ADS -->
+  <!-- SEÇÃO RESULTADOS GOOGLE -->
   <section id="section-results-google">
 
     <div class="results-title-wrap fade-up">
@@ -1938,7 +1977,7 @@
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 7 — RESULTADOS META ADS -->
+  <!-- SEÇÃO RESULTADOS META -->
   <section id="section-results-meta">
 
     <div class="results-title-wrap fade-up">
@@ -1976,7 +2015,7 @@
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 8 — COMENTÁRIOS DOS CLIENTES -->
+  <!-- SEÇÃO COMENTÁRIOS -->
   <section id="section-reviews">
 
     <div class="fade-up" style="text-align:center;">
@@ -1990,7 +2029,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">Depois de meses desperdiçando dinheiro com anúncios que não convertiam, a Kalli Vision chegou e transformou completamente nossos resultados. Em menos de 60 dias já sentimos a diferença no número de leads qualificados.</p>
+        <p class="review-text">
+          Depois de meses desperdiçando dinheiro com anúncios que não convertiam, a Kalli Vision chegou e transformou completamente nossos resultados. Em menos de 60 dias já sentimos a diferença no número de leads qualificados.
+        </p>
         <div class="review-author">
           <div class="review-avatar">M</div>
           <div class="review-author-info">
@@ -2004,7 +2045,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">O diferencial da Kalli Vision é que eles realmente entendem o seu negócio antes de anunciar. Não é anúncio genérico. É estratégia. Triplicamos nosso volume de agendamentos em 3 meses.</p>
+        <p class="review-text">
+          O diferencial da Kalli Vision é que eles realmente entendem o seu negócio antes de anunciar. Não é anúncio genérico. É estratégia. Triplicamos nosso volume de agendamentos em 3 meses.
+        </p>
         <div class="review-author">
           <div class="review-avatar">A</div>
           <div class="review-author-info">
@@ -2018,7 +2061,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">Profissionalismo e transparência em cada etapa. Acompanho os relatórios toda semana e consigo ver claramente onde cada real investido está gerando retorno. Recomendo sem hesitar.</p>
+        <p class="review-text">
+          Profissionalismo e transparência em cada etapa. Acompanho os relatórios toda semana e consigo ver claramente onde cada real investido está gerando retorno. Recomendo sem hesitar.
+        </p>
         <div class="review-author">
           <div class="review-avatar">R</div>
           <div class="review-author-info">
@@ -2032,7 +2077,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">Eu tinha medo de investir em tráfego pago porque nunca tinha tido resultado. Com a Kalli Vision foi diferente desde o início. Eles montaram o funil, ajustaram a oferta e os clientes começaram a chegar.</p>
+        <p class="review-text">
+          Eu tinha medo de investir em tráfego pago porque nunca tinha tido resultado. Com a Kalli Vision foi diferente desde o início. Eles montaram o funil, ajustaram a oferta e os clientes começaram a chegar.
+        </p>
         <div class="review-author">
           <div class="review-avatar">J</div>
           <div class="review-author-info">
@@ -2046,7 +2093,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">O crescimento foi consistente e previsível, exatamente o que a gente precisava. A equipe otimiza as campanhas sem a gente precisar cobrar. Parceria de verdade.</p>
+        <p class="review-text">
+          O crescimento foi consistente e previsível, exatamente o que a gente precisava. A equipe otimiza as campanhas sem a gente precisar cobrar. Parceria de verdade.
+        </p>
         <div class="review-author">
           <div class="review-avatar">C</div>
           <div class="review-author-info">
@@ -2060,7 +2109,9 @@
         <div class="review-stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
         </div>
-        <p class="review-text">Resultado real, sem enrolação. A Kalli Vision entrega o que promete e ainda vai além. Minha empresa cresceu de forma consistente desde que começamos a parceria. São os melhores que já contratei.</p>
+        <p class="review-text">
+          Resultado real, sem enrolação. A Kalli Vision entrega o que promete e ainda vai além. Minha empresa cresceu de forma consistente desde que começamos a parceria. São os melhores que já contratei.
+        </p>
         <div class="review-author">
           <div class="review-avatar">F</div>
           <div class="review-author-info">
@@ -2075,7 +2126,7 @@
 
   <div class="divider"></div>
 
-  <!-- SEÇÃO 9 — DEPOIMENTOS EM VÍDEO -->
+  <!-- SEÇÃO VÍDEOS DEPOIMENTOS -->
   <section id="section-testimonials">
 
     <div class="fade-up" style="text-align:center;">
@@ -2087,7 +2138,6 @@
 
       <div class="testimonial-video-card fade-up d1">
         <div class="testimonial-video-wrap">
-          <!-- Substitua SEU_VIDEO_ID_1 pelo ID do vídeo do YouTube -->
           <iframe
             src="https://www.youtube.com/embed/SEU_VIDEO_ID_1?rel=0&modestbranding=1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -2100,7 +2150,6 @@
 
       <div class="testimonial-video-card fade-up d2">
         <div class="testimonial-video-wrap">
-          <!-- Substitua SEU_VIDEO_ID_2 pelo ID do vídeo do YouTube -->
           <iframe
             src="https://www.youtube.com/embed/SEU_VIDEO_ID_2?rel=0&modestbranding=1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -2113,7 +2162,6 @@
 
       <div class="testimonial-video-card fade-up d3">
         <div class="testimonial-video-wrap">
-          <!-- Substitua SEU_VIDEO_ID_3 pelo ID do vídeo do YouTube -->
           <iframe
             src="https://www.youtube.com/embed/SEU_VIDEO_ID_3?rel=0&modestbranding=1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -2129,14 +2177,12 @@
 
   <div class="divider"></div>
 
-  <!-- NOVA SEÇÃO: SOBRE A KALLI VISION -->
+  <!-- SEÇÃO SOBRE -->
   <section id="section-about">
     <div class="about-content">
       <div class="about-image-wrap fade-up">
-        <!-- Foto para Desktop -->
-        <img class="about-image-desktop" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/felipe-kalli-vision.png" alt="Felipe - Kalli Vision" />
-        <!-- Foto para Mobile -->
-        <img class="about-image-mobile" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/felipe-kalli-vision.png" alt="Felipe - Kalli Vision" />
+        <img class="about-image-desktop" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45-1.png" alt="Felipe - Kalli Vision" />
+        <img class="about-image-mobile" src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45-1.png" alt="Felipe - Kalli Vision" />
       </div>
       <div class="about-text-block fade-up d1">
         <h2 class="about-title">Quem está por trás da Kalli Vision</h2>
@@ -2156,7 +2202,7 @@
 
   <div class="divider"></div>
 
-  <!-- NOVA SEÇÃO: VAMOS ANALISAR SEU NEGÓCIO? (FORMULÁRIO) -->
+  <!-- SEÇÃO CTA FORMULÁRIO -->
   <section id="section-cta">
     <div class="fade-up">
       <h2 class="cta-title">Vamos analisar seu <span>negócio?</span></h2>
@@ -2164,7 +2210,7 @@
         Preencha o formulário abaixo para agendarmos uma conversa estratégica.
       </p>
 
-      <form class="contact-form fade-up d1" action="YOUR_GOOGLE_SHEETS_FORM_ENDPOINT" method="POST" target="_blank">
+      <form class="contact-form fade-up d1" action="https://script.google.com/macros/s/AKfycbyTY3H7BqKviLUfcMWoUdk6a9WO_tkRu5YLHiHnmM0plL7CLLQdamGokGMcGgz-ODpy/exec" method="POST">
         <div class="form-group">
           <label for="name">Nome Completo:</label>
           <input type="text" id="name" name="Nome Completo" required>
@@ -2188,6 +2234,13 @@
         <button type="submit" class="btn-submit">Enviar e Agendar Conversa</button>
       </form>
     </div>
+
+    <div class="success-message" id="successMessage">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+      </svg>
+      Dados enviados com sucesso! A Kalli Vision entrará em contato em breve.
+    </div>
   </section>
 
   <div class="divider"></div>
@@ -2206,9 +2259,9 @@
           Coloque sua empresa na frente das pessoas certas, no momento certo.
         </p>
         <div class="footer-social-icons">
-          <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.271 0-4.192 1.58-4.192 4.615v3.385z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.073 4.948.073 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.381 1.11-2.5 2.48-2.5s2.48 1.119 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-10.029-3.979v-1.89z"/></svg></a>
+          <a href="https://www.instagram.com/kallivision?igsh=MW4yaTQ5anQ4ejJtcg==" target="_blank" rel="noopener" aria-label="Instagram da Kalli Vision">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.073 4.948.073 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
         </div>
       </div>
 
@@ -2238,7 +2291,7 @@
         <h3 class="footer-heading">Contato</h3>
         <div class="footer-contact-info">
           <p>E-mail: <a href="mailto:contato@kallivision.com">contato@kallivision.com</a></p>
-          <p>Telefone: <a href="tel:+5511999999999">+55 (11) 99999-9999</a></p>
+          <p>WhatsApp: <a href="https://wa.me/5563992643444" target="_blank" rel="noopener">+55 (63) 99264-3444</a></p>
           <p>Endereço: Rua Exemplo, 123<br>Bairro, Cidade - SP, 00000-000</p>
         </div>
       </div>
@@ -2255,56 +2308,51 @@
   </footer>
 
   <!-- BOTÃO FLUTUANTE WHATSAPP -->
-  <a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+  <a href="https://wa.me/5563992643444" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
     <svg viewBox="0 0 24 24">
       <path d="M12.04 2.02c-5.47 0-9.91 4.44-9.91 9.91 0 1.75.46 3.45 1.32 4.95l-1.4 5.14 5.27-1.37c1.45.79 3.08 1.22 4.72 1.22 5.47 0 9.91-4.44 9.91-9.91s-4.44-9.91-9.91-9.91zm4.84 14.65c-.16.27-.64.54-1.09.61-.45.07-.98.11-1.56-.16-.6-.27-1.42-.52-2.39-1.46-.97-.94-1.62-2.1-1.81-2.42-.19-.32-.02-.5-.02-.69.01-.19.05-.32.11-.45.07-.13.16-.27.29-.42.13-.16.27-.27.4-.42.13-.16.2-.27.29-.42.09-.16.05-.27-.02-.4-.07-.13-.45-1.08-.61-1.46-.16-.38-.32-.32-.45-.32-.13 0-.29-.02-.45-.02-.16 0-.42.05-.64.27-.22.22-.84.84-.84 2.04 0 1.2.86 2.36.98 2.51.13.16 1.7 2.61 4.1 3.61 2.4.99 2.4 1.62 2.69 1.81.29.19.54.27.73.27.19 0 .54-.02.73-.16.19-.13.64-.27.73-.4.09-.13.16-.27.22-.4.07-.13.07-.27.07-.45-.02-.19-.02-.32-.05-.45z"/>
     </svg>
   </a>
 
-  <!-- JAVASCRIPT -->
   <script>
-    /* ----------------------------------------------------------------
-       1. NAVBAR — expande ao rolar 80px (PC) ou ao clicar (Mobile)
-    ---------------------------------------------------------------- */
+    /* NAVBAR */
     const navbar = document.getElementById('navbar');
     const navPill = document.querySelector('.nav-pill');
     const navCloseBtn = document.querySelector('.nav-close-btn');
 
-    // Comportamento para desktop (expande ao rolar)
     function handleScrollNavbar() {
-      if (window.innerWidth > 860) { // Aplica apenas para desktop
+      if (window.innerWidth > 860) {
         navbar.classList.toggle('expanded', window.scrollY > 80);
       }
     }
 
-    // Comportamento para mobile (expande ao clicar)
-    function handleClickNavbar() {
-      if (window.innerWidth <= 860) { // Aplica apenas para mobile
-        navbar.classList.toggle('expanded');
+    function handleClickNavbar(event) {
+      if (window.innerWidth <= 860) {
+        if (event.target === navCloseBtn) {
+          navbar.classList.remove('expanded');
+        } else {
+          navbar.classList.toggle('expanded');
+        }
       }
     }
 
     window.addEventListener('scroll', handleScrollNavbar, { passive: true });
     navPill.addEventListener('click', handleClickNavbar);
     navCloseBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // Impede que o clique no botão feche a navbar e reabra imediatamente
+      e.stopPropagation();
       navbar.classList.remove('expanded');
     });
 
-    // Resetar navbar para estado inicial ao redimensionar de mobile para desktop
     window.addEventListener('resize', () => {
       if (window.innerWidth > 860) {
-        navbar.classList.remove('expanded'); // Garante que não fique expandida se redimensionar de mobile
-        handleScrollNavbar(); // Aplica o comportamento de scroll se já estiver rolado
+        navbar.classList.remove('expanded');
+        handleScrollNavbar();
       } else {
-        navbar.classList.remove('expanded'); // Garante que não fique expandida se redimensionar de desktop para mobile
+        navbar.classList.remove('expanded');
       }
     });
 
-
-    /* ----------------------------------------------------------------
-       2. ANIMAÇÕES DE ENTRADA — IntersectionObserver
-    ---------------------------------------------------------------- */
+    /* ANIMAÇÕES DE ENTRADA */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -2316,9 +2364,6 @@
 
     document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-    /* ----------------------------------------------------------------
-       3. HERO — ativa animações imediatamente
-    ---------------------------------------------------------------- */
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.querySelectorAll('#hero .fade-up')
@@ -2326,9 +2371,7 @@
       }, 90);
     });
 
-    /* ----------------------------------------------------------------
-       4. PARALLAX SUAVE no glow do hero
-    ---------------------------------------------------------------- */
+    /* PARALLAX */
     const glow = document.querySelector('.hero-glow');
     if (glow) {
       window.addEventListener('mousemove', e => {
@@ -2338,13 +2381,10 @@
       }, { passive: true });
     }
 
-    /* ----------------------------------------------------------------
-       5. CARROSSÉIS DE RESULTADOS
-    ---------------------------------------------------------------- */
+    /* CARROSSÉIS RESULTADOS */
     function initCarousel(trackId, dotsId, intervalMs) {
       const track  = document.getElementById(trackId);
       const dotsEl = document.getElementById(dotsId);
-
       if (!track || !dotsEl) return;
 
       const slides = Array.from(track.querySelectorAll('.results-slide'));
@@ -2352,8 +2392,7 @@
       let current  = 0;
       let timer    = null;
 
-      /* Cria dots */
-      dotsEl.innerHTML = ''; // Limpa dots existentes antes de criar
+      dotsEl.innerHTML = '';
       slides.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.className = 'results-dot' + (i === 0 ? ' active' : '');
@@ -2377,7 +2416,6 @@
       function next() { goTo(current + 1); }
       function prev() { goTo(current - 1); }
 
-      /* Botões seta */
       const wrap = track.closest('.results-carousel-wrap');
       wrap.querySelector('.results-btn-prev').addEventListener('click', () => {
         prev();
@@ -2388,7 +2426,6 @@
         resetTimer();
       });
 
-      /* Autoplay */
       function startTimer() {
         timer = setInterval(next, intervalMs);
       }
@@ -2397,11 +2434,9 @@
         startTimer();
       }
 
-      /* Pausa ao hover */
       wrap.addEventListener('mouseenter', () => clearInterval(timer));
       wrap.addEventListener('mouseleave', startTimer);
 
-      /* Swipe touch */
       let touchStartX = 0;
       wrap.addEventListener('touchstart', e => {
         touchStartX = e.touches[0].clientX;
@@ -2417,9 +2452,39 @@
       startTimer();
     }
 
-    /* Inicializa os dois carrosséis com intervalos diferentes */
     initCarousel('google-track', 'google-dots', 4000);
     initCarousel('meta-track',   'meta-dots',   4500);
+
+    /* FORMULÁRIO + ANIMAÇÃO SUCESSO */
+    const contactForm = document.querySelector('.contact-form');
+    const successMessage = document.getElementById('successMessage');
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(contactForm);
+      const url = contactForm.action;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          successMessage.classList.add('show');
+          contactForm.reset();
+          setTimeout(() => {
+            successMessage.classList.remove('show');
+          }, 4000);
+        } else {
+          alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
+        }
+      } catch (error) {
+        console.error('Erro ao enviar o formulário:', error);
+        alert('Ocorreu um erro de conexão. Por favor, tente novamente.');
+      }
+    });
   </script>
 
 </body>
