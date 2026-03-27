@@ -11,11 +11,51 @@
 
   gtag('config', 'AW-18038301715');
 </script>
+
+  <!-- CONVERSÕES GOOGLE ADS -->
+  <script>
+    // CLICOU EM QUALQUER LINK DE WHATSAPP
+    document.addEventListener('click', function(e){
+      const link = e.target.closest('a');
+      if (!link) return;
+      if (link.href && link.href.includes('wa.me')) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18038301715/zkVXCOe62JAcEJPIqplD'
+        });
+      }
+    });
+
+    // ENVIOU INFORMAÇÕES NO FORMULÁRIO (.contact-form)
+    document.addEventListener('submit', function(e){
+      if (e.target && e.target.classList.contains('contact-form')) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18038301715/p9T0CM6e4JAcEJPIqplD'
+        });
+      }
+    });
+
+    // QUANDO CLICAR EM UM DEPOIMENTO PRA ASSISTIR (iframe YouTube)
+    document.addEventListener('click', function(e){
+      const iframe = e.target.closest('iframe');
+      if (iframe && iframe.src && iframe.src.includes('youtube.com/embed')) {
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18038301715/IkkGCJq44JAcEJPIqplD'
+        });
+      }
+    });
+  </script>
   
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kalli Vision — Tráfego Pago com Resultado</title>
 
+ <!-- FAVICON -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/logo-kalli-2.png?allow_lossy=1"
+  />
+  
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -1684,6 +1724,40 @@
       .about-image-wrap { width: 220px; height: 220px; }
       .contact-form { padding: 30px 20px; }
     }
+    .whatsapp-section-btn {
+      display: flex;
+      justify-content: center;
+      margin: 50px 0;
+    }
+
+    .whatsapp-section-btn-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      border-radius: 14px;
+      background: #25D366;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: var(--font);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    }
+
+    .whatsapp-section-btn-inner:hover {
+      background: #1ebe57;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37,211,102,0.45);
+    }
+
+    .whatsapp-section-btn-inner img {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -1856,10 +1930,28 @@
     </div>
   </section>
 
-  <div class="divider"></div>
+</section>
 
-  <!-- SEÇÃO PROCESSO -->
-  <section id="section-process">
+<!-- BOTÃO 1 – FIM DA SEÇÃO “O que a Kalli Vision faz por você?” -->
+<div class="whatsapp-section-btn">
+  <a
+    class="whatsapp-section-btn-inner"
+    href="https://wa.me/5563992643444?text=Ol%C3%A1!%20Gostaria%20de%20entender%20como%20funciona%20o%20trabalho%20da%20Kalli%20Vision."
+    target="_blank"
+    rel="noopener"
+  >
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/500px-WhatsApp.svg.png"
+      alt="WhatsApp"
+    />
+    Quero entender como funciona
+  </a>
+</div>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO PROCESSO -->
+<section id="section-process">
     <div class="fade-up" style="text-align:center;">
       <p class="section-title-blue">Como funciona o</p>
       <p class="section-title-white">nosso processo</p>
@@ -1932,12 +2024,28 @@
         </ul>
       </div>
     </div>
-  </section>
+</section>
 
-  <div class="divider"></div>
+<!-- BOTÃO 2 – FIM DA SEÇÃO “Esse serviço é para o seu negócio” -->
+<div class="whatsapp-section-btn">
+  <a
+    class="whatsapp-section-btn-inner"
+    href="https://wa.me/5563992643444?text=Ol%C3%A1!%20Gostaria%20de%20avaliar%20o%20meu%20neg%C3%B3cio%20com%20a%20Kalli%20Vision."
+    target="_blank"
+    rel="noopener"
+  >
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/500px-WhatsApp.svg.png"
+      alt="WhatsApp"
+    />
+    Avaliar meu negócio
+  </a>
+</div>
 
-  <!-- SEÇÃO CLIENTES -->
-  <section id="section-clients">
+<div class="divider"></div>
+
+<!-- SEÇÃO CLIENTES -->
+<section id="section-clients">
     <div class="clients-title-wrap fade-up">
       <span class="clients-heading clients-heading-white">CLIENTES DA </span>
       <span class="clients-heading clients-heading-blue">KALLI VISION</span>
@@ -2031,6 +2139,22 @@
 
     <div class="results-dots" id="meta-dots"></div>
   </section>
+
+  <!-- BOTÃO 3 – FIM DA SEÇÃO “RESULTADOS META ADS” -->
+  <div class="whatsapp-section-btn">
+    <a
+      class="whatsapp-section-btn-inner"
+      href="https://wa.me/5563992643444?text=Ol%C3%A1!%20Gostaria%20de%20iniciar%20uma%20conversa%20com%20a%20Kalli%20Vision%20pelo%20WhatsApp."
+      target="_blank"
+      rel="noopener"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/500px-WhatsApp.svg.png"
+        alt="WhatsApp"
+      />
+      Iniciar conversa no WhatsApp
+    </a>
+  </div>
 
   <div class="divider"></div>
 
