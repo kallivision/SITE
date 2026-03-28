@@ -1758,6 +1758,77 @@
       height: 22px;
       display: block;
     }
+    /* ================================================
+   BOTÕES NEON PULSANTES
+================================================ */
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 8px rgba(26, 111, 255, 0.6),
+                0 0 16px rgba(26, 111, 255, 0.4),
+                0 0 24px rgba(26, 111, 255, 0.2);
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(77, 159, 255, 0.9),
+                0 0 26px rgba(77, 159, 255, 0.7),
+                0 0 40px rgba(77, 159, 255, 0.4);
+    transform: translateY(-1px) scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(26, 111, 255, 0.6),
+                0 0 16px rgba(26, 111, 255, 0.4),
+                0 0 24px rgba(26, 111, 255, 0.2);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Botão principal hero */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  animation: neonPulse 2.4s ease-in-out infinite;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, rgba(26,111,255,0.4), rgba(168,224,255,0.15));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+/* Botão nav */
+.btn-nav {
+  position: relative;
+  overflow: hidden;
+  animation: neonPulse 2.8s ease-in-out infinite;
+}
+
+/* Botão enviar formulário */
+.btn-submit {
+  position: relative;
+  overflow: hidden;
+  animation: neonPulse 2.6s ease-in-out infinite;
+}
+
+/* Botões de seção WhatsApp */
+.whatsapp-section-btn-inner {
+  position: relative;
+  overflow: hidden;
+  animation: neonPulse 2.4s ease-in-out infinite;
+}
+
+/* Bolinha flutuante do WhatsApp */
+.whatsapp-float {
+  animation: neonPulse 3s ease-in-out infinite;
+}
   </style>
 </head>
 <body>
@@ -1787,20 +1858,20 @@
 
   <!-- HERO -->
   <section id="hero">
-    <img
-      class="hero-bg"
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-14.png"
-      alt=""
-      aria-hidden="true"
-      fetchpriority="high"
-    />
-    <img
-      class="hero-bg-mobile"
-      src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/tenha-vendas-previsiveis-todos-os-dias-usando-trafego-pago-post-para-instagram-45-2.png"
-      alt=""
-      aria-hidden="true"
-      fetchpriority="high"
-    />
+<img
+  class="hero-bg"
+  src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/foto-inicio-desk-1.png"
+  alt=""
+  aria-hidden="true"
+  fetchpriority="high"
+/>
+<img
+  class="hero-bg-mobile"
+  src="https://kallivisionbancodeimagens.wordpress.com/wp-content/uploads/2026/03/foto-inicio-mobile.png"
+  alt=""
+  aria-hidden="true"
+  fetchpriority="high"
+/>
 
     <div class="hero-overlay"></div>
     <div class="hero-glow"></div>
@@ -2364,11 +2435,27 @@
           <label for="company">Nome da Empresa:</label>
           <input type="text" id="company" name="Nome da Empresa" required>
         </div>
-        <div class="form-group">
-          <label for="message">Qual seu principal objetivo com tráfego pago?</label>
-          <textarea id="message" name="Objetivo" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">Enviar e Agendar Conversa</button>
+<div class="form-group">
+  <label for="message">Qual seu principal objetivo com tráfego pago?</label>
+  <textarea id="message" name="Objetivo" rows="4" required></textarea>
+</div>
+
+<div class="form-group">
+  <label for="niche">Qual o seu nicho?</label>
+  <input type="text" id="niche" name="Nicho" required>
+</div>
+
+<div class="form-group">
+  <label for="revenue">Faturamento Mensal (aproximado):</label>
+  <input type="text" id="revenue" name="Faturamento Mensal" required>
+</div>
+
+<div class="form-group">
+  <label for="ads-investment">Quanto pretende investir em anúncios por mês?</label>
+  <input type="text" id="ads-investment" name="Investimento em Anúncios" required>
+</div>
+
+<button type="submit" class="btn-submit">Enviar e Agendar Conversa</button>
 
         <!-- OVERLAY DE CARREGAMENTO -->
         <div class="loading-overlay" id="loadingOverlay">
@@ -2457,197 +2544,277 @@
     </svg>
   </a>
 
-  <!-- JAVASCRIPT -->
+   <!-- JAVASCRIPT -->
   <script>
-    /* NAVBAR */
-    const navbar = document.getElementById('navbar');
-    const navPill = document.querySelector('.nav-pill');
-    const navCloseBtn = document.querySelector('.nav-close-btn');
+    // ============================
+    // NAVBAR
+    // ============================
+    (function () {
+      const navbar    = document.getElementById('navbar');
+      const navPill   = document.querySelector('.nav-pill');
+      const navCloseBtn = document.querySelector('.nav-close-btn');
 
-    function handleScrollNavbar() {
-      if (window.innerWidth > 860) {
-        navbar.classList.toggle('expanded', window.scrollY > 80);
+      function handleScrollNavbar() {
+        if (!navbar) return;
+        if (window.innerWidth > 860) {
+          navbar.classList.toggle('expanded', window.scrollY > 80);
+        }
       }
-    }
 
-    function handleClickNavbar(event) {
-      if (window.innerWidth <= 860) {
-        if (event.target === navCloseBtn) {
+      function handleClickNavbar(event) {
+        if (!navbar || !navPill) return;
+        if (window.innerWidth <= 860) {
+          if (event.target === navCloseBtn) {
+            navbar.classList.remove('expanded');
+          } else {
+            navbar.classList.toggle('expanded');
+          }
+        }
+      }
+
+      window.addEventListener('scroll', handleScrollNavbar, { passive: true });
+
+      if (navPill) {
+        navPill.addEventListener('click', handleClickNavbar);
+      }
+
+      if (navCloseBtn) {
+        navCloseBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (navbar) navbar.classList.remove('expanded');
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        if (!navbar) return;
+        if (window.innerWidth > 860) {
           navbar.classList.remove('expanded');
+          handleScrollNavbar();
         } else {
-          navbar.classList.toggle('expanded');
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScrollNavbar, { passive: true });
-    navPill.addEventListener('click', handleClickNavbar);
-    navCloseBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      navbar.classList.remove('expanded');
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 860) {
-        navbar.classList.remove('expanded');
-        handleScrollNavbar();
-      } else {
-        navbar.classList.remove('expanded');
-      }
-    });
-
-    /* ANIMAÇÕES DE ENTRADA */
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
+          navbar.classList.remove('expanded');
         }
       });
-    }, { rootMargin: '0px 0px -55px 0px', threshold: 0.10 });
+    })();
 
-    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+    // ============================
+    // ANIMAÇÕES DE ENTRADA
+    // ============================
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.querySelectorAll('#hero .fade-up')
-          .forEach(el => el.classList.add('in'));
-      }, 90);
-    });
+      const io = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          rootMargin: '0px 0px -55px 0px',
+          threshold: 0.1
+        }
+      );
 
-    /* PARALLAX HERO */
-    const glow = document.querySelector('.hero-glow');
-    if (glow) {
-      window.addEventListener('mousemove', e => {
-        const rx = (e.clientX / window.innerWidth  - 0.5) * 30;
-        const ry = (e.clientY / window.innerHeight - 0.5) * 30;
-        glow.style.transform = `translate(${rx}px, ${ry}px)`;
-      }, { passive: true });
-    }
+      document.querySelectorAll('.fade-up').forEach((el) => io.observe(el));
 
-    /* CARROSSÉIS RESULTADOS */
-    function initCarousel(trackId, dotsId, intervalMs) {
-      const track  = document.getElementById(trackId);
-      const dotsEl = document.getElementById(dotsId);
-      if (!track || !dotsEl) return;
-
-      const slides = Array.from(track.querySelectorAll('.results-slide'));
-      const total  = slides.length;
-      let current  = 0;
-      let timer    = null;
-
-      dotsEl.innerHTML = '';
-      slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'results-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', `Slide ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsEl.appendChild(dot);
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          document
+            .querySelectorAll('#hero .fade-up')
+            .forEach((el) => el.classList.add('in'));
+        }, 90);
       });
+    })();
 
-      function updateDots() {
-        dotsEl.querySelectorAll('.results-dot').forEach((d, i) => {
-          d.classList.toggle('active', i === current);
+    // ============================
+    // PARALLAX HERO
+    // ============================
+    (function () {
+      const glow = document.querySelector('.hero-glow');
+      if (!glow) return;
+
+      window.addEventListener(
+        'mousemove',
+        (e) => {
+          const rx = (e.clientX / window.innerWidth - 0.5) * 30;
+          const ry = (e.clientY / window.innerHeight - 0.5) * 30;
+          glow.style.transform = `translate(${rx}px, ${ry}px)`;
+        },
+        { passive: true }
+      );
+    })();
+
+    // ============================
+    // CARROSSÉIS RESULTADOS
+    // ============================
+    (function () {
+      function initCarousel(trackId, dotsId, intervalMs) {
+        const track  = document.getElementById(trackId);
+        const dotsEl = document.getElementById(dotsId);
+        if (!track || !dotsEl) return;
+
+        const slides = Array.from(track.querySelectorAll('.results-slide'));
+        const total  = slides.length;
+        if (!total) return;
+
+        let current = 0;
+        let timer   = null;
+
+        // Cria os dots
+        dotsEl.innerHTML = '';
+        slides.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'results-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', `Slide ${i + 1}`);
+          dot.type = 'button';
+          dot.addEventListener('click', () => {
+            goTo(i);
+            resetTimer();
+          });
+          dotsEl.appendChild(dot);
         });
-      }
 
-      function goTo(index) {
-        current = (index + total) % total;
-        track.style.transform = `translateX(-${current * 100}%)`;
-        updateDots();
-      }
+        function updateDots() {
+          const dots = dotsEl.querySelectorAll('.results-dot');
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        }
 
-      function next() { goTo(current + 1); }
-      function prev() { goTo(current - 1); }
+        function goTo(index) {
+          current = (index + total) % total;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          updateDots();
+        }
 
-      const wrap = track.closest('.results-carousel-wrap');
-      if (!wrap) return;
+        function next() {
+          goTo(current + 1);
+        }
 
-      const prevBtn = wrap.querySelector('.results-btn-prev');
-      const nextBtn = wrap.querySelector('.results-btn-next');
+        function prev() {
+          goTo(current - 1);
+        }
 
-      if (prevBtn && nextBtn) {
-        prevBtn.addEventListener('click', () => {
-          prev();
-          resetTimer();
-        });
-        nextBtn.addEventListener('click', () => {
-          next();
-          resetTimer();
-        });
-      }
+        const wrap = track.closest('.results-carousel-wrap');
+        if (!wrap) return;
 
-      function startTimer() {
-        timer = setInterval(next, intervalMs);
-      }
-      function resetTimer() {
-        clearInterval(timer);
+        const prevBtn = wrap.querySelector('.results-btn-prev');
+        const nextBtn = wrap.querySelector('.results-btn-next');
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            prev();
+            resetTimer();
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            next();
+            resetTimer();
+          });
+        }
+
+        function startTimer() {
+          stopTimer();
+          timer = setInterval(next, intervalMs);
+        }
+
+        function stopTimer() {
+          if (timer) clearInterval(timer);
+        }
+
+        function resetTimer() {
+          startTimer();
+        }
+
+        wrap.addEventListener('mouseenter', stopTimer);
+        wrap.addEventListener('mouseleave', startTimer);
+
+        let touchStartX = 0;
+        wrap.addEventListener(
+          'touchstart',
+          (e) => {
+            if (!e.touches || !e.touches.length) return;
+            touchStartX = e.touches[0].clientX;
+          },
+          { passive: true }
+        );
+
+        wrap.addEventListener(
+          'touchend',
+          (e) => {
+            if (!e.changedTouches || !e.changedTouches.length) return;
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) {
+              diff > 0 ? next() : prev();
+              resetTimer();
+            }
+          },
+          { passive: true }
+        );
+
+        // inicia
         startTimer();
       }
 
-      wrap.addEventListener('mouseenter', () => clearInterval(timer));
-      wrap.addEventListener('mouseleave', startTimer);
+      initCarousel('google-track', 'google-dots', 4000);
+      initCarousel('meta-track',   'meta-dots',   4500);
+    })();
 
-      let touchStartX = 0;
-      wrap.addEventListener('touchstart', e => {
-        touchStartX = e.touches[0].clientX;
-      }, { passive: true });
-      wrap.addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 40) {
-          diff > 0 ? next() : prev();
-          resetTimer();
+    // ============================
+    // FORMULÁRIO + LOADING + SUCESSO
+    // ============================
+    (function () {
+      const contactForm    = document.querySelector('.contact-form');
+      const successMessage = document.getElementById('successMessage');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+
+      if (!contactForm) return;
+
+      const submitBtn = contactForm.querySelector('.btn-submit');
+
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!submitBtn) return;
+
+        // Estado carregando
+        submitBtn.disabled = true;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando...';
+        if (loadingOverlay) loadingOverlay.classList.add('show');
+
+        const formData = new FormData(contactForm);
+        const url = contactForm.action;
+
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            if (successMessage) {
+              successMessage.classList.add('show');
+            }
+            contactForm.reset();
+            setTimeout(() => {
+              if (successMessage) successMessage.classList.remove('show');
+            }, 4000);
+          } else {
+            alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
+          }
+        } catch (error) {
+          console.error('Erro ao enviar o formulário:', error);
+          alert('Ocorreu um erro de conexão. Por favor, tente novamente.');
+        } finally {
+          if (loadingOverlay) loadingOverlay.classList.remove('show');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
         }
-      }, { passive: true });
-
-      startTimer();
-    }
-
-    initCarousel('google-track', 'google-dots', 4000);
-    initCarousel('meta-track',   'meta-dots',   4500);
-
-    /* FORMULÁRIO + LOADING + SUCESSO */
-    const contactForm = document.querySelector('.contact-form');
-    const successMessage = document.getElementById('successMessage');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const submitBtn = contactForm.querySelector('.btn-submit');
-
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Estado carregando
-      submitBtn.disabled = true;
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Enviando...';
-      loadingOverlay.classList.add('show');
-
-      const formData = new FormData(contactForm);
-      const url = contactForm.action;
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          successMessage.classList.add('show');
-          contactForm.reset();
-          setTimeout(() => {
-            successMessage.classList.remove('show');
-          }, 4000);
-        } else {
-          alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
-        }
-      } catch (error) {
-        console.error('Erro ao enviar o formulário:', error);
-        alert('Ocorreu um erro de conexão. Por favor, tente novamente.');
-      } finally {
-        loadingOverlay.classList.remove('show');
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    });
+      });
+    })();
   </script>
 </body>
 </html>
